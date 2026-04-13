@@ -1,23 +1,20 @@
-documentation_architecture:
-  - diagram_name: "Sphinx"
-    description: "The core process of transforming source files into HTML using Sphinx."
+charmed_airflow_architecture:
+  - diagram_name: "Charmed Airflow"
+    description: "High-level architecture of the Charmed Airflow deployment."
     mermaid_code: |
       graph LR
-          A["Source Files<br/>(.rst or .md)"] -->|provides content to| C[Sphinx]
-          B["Configuration<br/>(docs/conf.py)"] -->|provides settings to| C
-          C -->|generates| D[Built HTML Pages]
-    rendered_image: "../explanation/assets/sphinx.png"
-
-  - diagram_name: "Python environment"
-    description: "The relationship between the host system and the virtual environment."
-    mermaid_code: |
-      graph LR
-          subgraph Host ["Host"]
-              direction LR
-              pip[pip] -->|installs| PD["Project dependencies"]
-              python3[python3] --> Sphinx
-              venv[venv] -->|creates| VE["Virtual environment"]
-              subgraph VE ["Virtual environment"]
+          subgraph Juju ["Juju Model"]
+              Coordinator["airflow-coordinator-k8s"]
+              API["airflow-api-server"]
+              Scheduler["airflow-scheduler"]
+              DAG["airflow-dag-processor"]
+              Triggerer["airflow-triggerer"]
+          end
+          Coordinator -->|coordinates| API
+          Coordinator -->|coordinates| Scheduler
+          Coordinator -->|coordinates| DAG
+          Coordinator -->|coordinates| Triggerer
+    rendered_image: "../explanation/assets/architecture.png"
                   direction LR
                   PD -->|extend| Sphinx
               end
