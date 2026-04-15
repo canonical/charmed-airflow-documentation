@@ -22,9 +22,7 @@ import yaml
 
 # Project name
 #
-# TODO: Update with the official name of your project or product
-
-project = "Documentation starter pack"
+project = "Charmed Airflow"
 author = "Canonical Ltd."
 
 # The year in the copyright statement defaults to the current year, so
@@ -52,7 +50,7 @@ html_title = project + " documentation"
 # NOTE: The Open Graph Protocol (OGP) enhances page display in a social graph
 #       and is used by social media platforms; see https://ogp.me/
 
-ogp_site_url = "https://canonical-starter-pack.readthedocs-hosted.com/"
+ogp_site_url = "https://canonical-charmed-airflow.readthedocs-hosted.com/"
 
 
 # Preview name of the documentation website
@@ -88,7 +86,7 @@ html_context = {
     # TODO: If there's no such website,
     #       remove the {{ product_page }} link from the page header template
     #       (usually .sphinx/_templates/header.html; also, see README.rst).
-    "product_page": "documentation.ubuntu.com",
+    # "product_page": "ubuntu.com/data/airflow",
     # Product tag image; the orange part of your logo, shown in the page header
     #
     # TODO: To add a tag image, uncomment and update as needed.
@@ -103,22 +101,22 @@ html_context = {
     # Your Mattermost channel URL
     #
     # TODO: Change to your Mattermost channel URL or leave empty.
-    "mattermost": "https://chat.canonical.com/canonical/channels/documentation",
+    # "mattermost": "https://chat.canonical.com/canonical/channels/documentation",
     # Your Matrix channel URL
     #
     # TODO: Change to your Matrix channel URL or leave empty.
-    "matrix": "https://matrix.to/#/#documentation:ubuntu.com",
+    # "matrix": "https://matrix.to/#/#documentation:ubuntu.com",
     # Your documentation GitHub repository URL
     #
     # TODO: Change to your documentation GitHub repository URL or leave empty.
     #
     # NOTE: If set, links for viewing the documentation source files
     #       and creating GitHub issues are added at the bottom of each page.
-    "github_url": "https://github.com/canonical/sphinx-docs-starter-pack",
+    "github_url": "https://github.com/canonical/charmed-airflow-documentation",
     # Docs branch in the repo; used in links for viewing the source files
     #
     # TODO: To customise the branch, uncomment and update as needed.
-    'repo_default_branch': 'main',
+    'repo_default_branch': 'track/3.1',
     # Docs location in the repo; used in links for viewing the source files
     #
 
@@ -129,7 +127,7 @@ html_context = {
     # Valid options: none, prev, next, both
     # "sequential_nav": "both",
     # TODO: To enable listing contributors on individual pages, set to True
-    "display_contributors": False,
+    "display_contributors": True,
 
     # Required for feedback button    
     'github_issues': 'enabled',
@@ -150,8 +148,8 @@ html_context = {
     #       it inherits the code license instead; specify it instead of 'CC-BY-SA'.
 
     "license": {
-        "name": "CC-BY-SA-3.0",
-        "url": "https://github.com/canonical/sphinx-docs-starter-pack/blob/main/LICENSE",
+        "name": "CC-BY-SA",
+        "url": "https://github.com/canonical/charmed-airflow-documentation/blob/main/LICENSE",
     },
 }
 

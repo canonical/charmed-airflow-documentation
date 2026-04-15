@@ -1,20 +1,10 @@
 Reference
 =========
 
-These documents provide an overview of different features of the starter pack.
-
-Also see the following information:
-
-- `Sphinx documentation starter pack repository`_
-
-Contents
---------
+Technical reference for the charms that make up Charmed Airflow.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   automatic_checks
-   default-extensions
-   rst-syntax
-   myst-syntax
-   
+   charms/index
+

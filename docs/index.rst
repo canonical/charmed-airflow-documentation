@@ -1,29 +1,30 @@
-Documentation starter pack
-==========================
+Charmed Airflow documentation
+=============================
 
-The documentation starter pack helps you to quickly set up, build, and publish
-documentation with Sphinx.
+`Charmed Airflow`_ is a Canonical operator-driven solution for deploying and managing
+`Apache Airflow`_ on Kubernetes using `Juju`_.
 
-It contains common styling and configuration through the `Canonical Sphinx`_ extension,
-supports both |RST| and Markdown, and includes automatic documentation checks.
+It automates deployment, scaling, and operations of Airflow workloads
+in a cloud-native environment.
 
+---------
 
 In this documentation
 ---------------------
 
 .. grid:: 1 1 2 2
 
-    .. grid-item-card:: Get started
-        :link: /set-up-a-new-project
+    .. grid-item-card:: Tutorial
+        :link: /tutorial/index
         :link-type: doc
 
-        Set up the Sphinx starter pack in your project for the first time.
+        **Get started** - hands-on introduction to Charmed Airflow for new users.
 
     .. grid-item-card:: How-to guides
         :link: /how-to/index
         :link-type: doc
 
-        **Step-by-step guides** - learn key operations and customisation.
+        **Step-by-step guides** - deploy, integrate, and operate Charmed Airflow.
 
 .. grid:: 1 1 2 2
 
@@ -31,26 +32,30 @@ In this documentation
         :link: /reference/index
         :link-type: doc
 
-        **Technical information** - review the automatic checks and Sphinx capabilities.
+        **Technical information** - charm configurations, actions, and integrations.
 
     .. grid-item-card:: Explanation
         :link: /explanation/index
         :link-type: doc
 
-        **Concepts** - understand the design and architecture of the starter pack.
+        **Concepts** - understand the architecture and design decisions.
 
 
 Project and community
-----------------------
+---------------------
 
-The Canonical Sphinx starter pack is an open source project that warmly welcomes community contributions, suggestions, fixes and constructive feedback.
+Charmed Airflow is an open source project that warmly welcomes community
+contributions, suggestions, fixes, and constructive feedback.
+
+* `Charmed Airflow on GitHub`_
+* `Apache Airflow documentation`_
 
 
 .. toctree::
     :hidden:
     :maxdepth: 2
 
-    Set up a new project <set-up-a-new-project>
+    Tutorial <tutorial/index>
     How-to guides <how-to/index>
     Reference <reference/index>
     Explanation <explanation/index>

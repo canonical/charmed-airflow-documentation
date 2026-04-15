@@ -1,41 +1,45 @@
-# Canonical's Sphinx Starter Pack
+# Charmed Airflow documentation
 
-*A pre-configured repository to build and publish documentation with Sphinx.*
+This is the code repository for Charmed Airflow documentation.
+See [Official documentation](https://canonical-charmed-airflow.readthedocs-hosted.com/en/latest/) for the rendered documentation.
 
-## Description
+## Get started
 
-The Documentation starter pack includes:
+CKF documentation is based on [Canonical's Sphinx starter pack](https://github.com/canonical/sphinx-docs-starter-pack).
+See [its documentation](https://canonical-starter-pack.readthedocs-hosted.com/latest/) for more details on how to build and customize it, run automatic checks, and explore other available configurations.
 
-* A bundled [Sphinx] theme, configuration, and extensions
-* Support for both reStructuredText (reST) and MyST Markdown
-* Build checks for links, spelling, and inclusive language
-* Customisation support layered over a core configuration
+### Build it
 
-See the full documentation: https://canonical-starter-pack.readthedocs-hosted.com/
+Run the following command within the `docs` folder to build the documentation locally: 
 
-## Structure
+```
+   make run
+```
 
-This section outlines the structure of this repository, and some key files.
+### Check it
 
-### `docs/`
+Run various checks locally with the following commands.
 
-This directory contains the documentation for the starter pack itself.
+Check links: 
 
-To view it in your browser, navigate to this directory and type `make run`.
+```
+   make linkcheck
+```
 
-### `.github/workflows/`
+Check spelling: 
 
-This directory contains files used for documentation build checks via GitHub's CI.
+```
+   make spelling
+```
 
-The file `test-starter-pack.yml` tests the functionality of the starter pack project.
+Check inclusive language: 
 
-## Contributing
+```
+   make woke
+```
 
-We welcome contributions to this project! If you have suggestions, bug fixes, or improvements, please open an issue or submit a pull request.
+Check accessibility:
 
-Please read and sign our [Contributor Licence Agreement (CLA)] before submitting any changes. The agreement grants Canonical permission to use your contributions. The author of a change remains the copyright owner of their code (no copyright assignment occurs).
-
-<!--Links-->
-
-[Sphinx]: https://www.sphinx-doc.org/
-[Contributor Licence Agreement (CLA)]: https://ubuntu.com/legal/contributors
+```
+   make pa11y
+```
