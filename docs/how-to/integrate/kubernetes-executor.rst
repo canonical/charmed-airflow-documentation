@@ -142,7 +142,7 @@ Customising worker Pods with ``pod_override``
 
 Pod customisation can be done through Airflow's ``pod_override``
 feature. This lets you override resource requests, environment variables,
-tolerations, and any other Kubernetes Pod spec field on a per-task basis.
+node affinity features, and any other Kubernetes Pod spec field on a per-task basis.
 
 For the full reference on ``pod_override``, see the `upstream Airflow Kubernetes Executor
 documentation
