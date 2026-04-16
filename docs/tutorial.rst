@@ -1,4 +1,4 @@
-.. _Tutorial:
+.. _deploy-airflow-tutorial:
 
 Tutorial: Deploy Airflow with Juju
 ==================================
@@ -60,6 +60,25 @@ Deploy the charms
 The Charmed Airflow solution consists of several charms that work together.
 This section walks you through deploying each one and wiring them up.
 
+Deploy PostgreSQL and PgBouncer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Airflow requires a PostgreSQL database to store metadata. Deploy PostgreSQL
+and PgBouncer (connection pooler):
+
+.. code-block:: bash
+
+   juju deploy postgresql-k8s --channel=14/stable --trust
+   juju deploy pgbouncer-k8s --trust
+
+.. note::
+
+   **PgBouncer is optional.** PgBouncer acts as a connection pooler, reducing
+   the number of direct connections to PostgreSQL. It is recommended for
+   production workloads but not required. If you skip PgBouncer, integrate the
+   coordinator directly with PostgreSQL instead of PgBouncer in the
+   integration step below.
+
 Deploy the Airflow Coordinator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -100,25 +119,6 @@ These charms map to the Airflow components:
    * - ``airflow-triggerer-k8s``
      - Handles deferred (asynchronous) tasks.
 
-Deploy PostgreSQL and PgBouncer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Airflow requires a PostgreSQL database to store metadata. Deploy PostgreSQL
-and PgBouncer (connection pooler):
-
-.. code-block:: bash
-
-   juju deploy postgresql-k8s --channel=14/stable --trust
-   juju deploy pgbouncer-k8s --trust
-
-.. note::
-
-   **PgBouncer is optional.** If you prefer a simpler setup, you can skip
-   PgBouncer.
-   PgBouncer is recommended for production workloads because it pools database
-   connections, reducing resource usage on PostgreSQL when many Airflow
-   components connect simultaneously.
-
 .. _integrate-charms:
 
 Integrate the charms
@@ -127,7 +127,7 @@ Integrate the charms
 Juju *integrations* (also called *relations*) connect the charms so they can
 exchange configuration, endpoints, and credentials automatically.
 
-Integrate PgBouncer with PostgreSQL:
+If you deployed PgBouncer, connect it to PostgreSQL first:
 
 .. code-block:: bash
 
@@ -216,6 +216,36 @@ distributes the configuration.
    pgbouncer-k8s/0*              active    idle   10.1.0.189         
    postgresql-k8s/0*             active    idle   10.1.0.2           Primary
 
+Verify the cluster health
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can check the health of all Airflow components through the REST API:
+
+.. code-block:: bash
+
+   curl -s http://<pod-ip>:8080/api/v2/monitor/health | jq
+
+Expected output:
+
+.. code-block:: json
+
+   {
+     "metadatabase": {
+       "status": "healthy"
+     },
+     "scheduler": {
+       "status": "healthy",
+       "latest_scheduler_heartbeat": "...timestamp..."
+     },
+     "triggerer": {
+       "status": "healthy",
+       "latest_triggerer_heartbeat": "...timestamp..."
+     },
+     "dag_processor": {
+       "status": "healthy",
+       "latest_dag_processor_heartbeat": "...timestamp..."
+     }
+   }
 
 .. _access-ui:
 
@@ -262,24 +292,45 @@ need to forward the port from inside the VM to your host.
 Option C: Use the Kubernetes service directly
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If your machine can reach the Kubernetes cluster network (for example, you are
-on the same host as k8s), you can query the pod IP directly:
+If your machine can reach the Kubernetes cluster network directly (for example,
+when running on the same host as the cluster), query the pod IP:
 
 .. code-block:: bash
 
-   microk8s kubectl get pod -n airflow airflow-api-server-k8s-0 \
+   kubectl get pod -n airflow airflow-api-server-k8s-0 \
      -o jsonpath='{.status.podIP}'
 
 Then open ``http://<pod-ip>:8080`` in your browser.
 
-Verify the cluster health
-~~~~~~~~~~~~~~~~~~~~~~~~~
+.. image:: images/airflow-login-ui.png
+   :alt: Airflow Web UI Login
+   :align: center
 
-You can check the health of all Airflow components through the REST API:
+Retrieve the credentials from the API server pod:
 
 .. code-block:: bash
 
-   curl -s http://<pod-ip>:8080/api/v2/monitor/health | jq
+   kubectl exec -it airflow-api-server-k8s-0 -c airflow-api-server \
+     -n airflow -- cat /opt/airflow/simple_auth_manager_passwords.json.generated
+
+Alternatively, search the API server logs:
+
+.. code-block:: bash
+
+   kubectl logs airflow-api-server-k8s-0 -c airflow-api-server -n airflow | grep -i password
+
+.. image:: images/airflow-ui.png
+   :alt: Airflow Web UI
+   :align: center
+
+Verify the cluster health
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+With port-forwarding active, confirm all Airflow components are healthy:
+
+.. code-block:: bash
+
+   curl -s http://localhost:8080/api/v2/monitor/health | jq
 
 Expected output:
 
@@ -291,18 +342,17 @@ Expected output:
      },
      "scheduler": {
        "status": "healthy",
-       "latest_scheduler_heartbeat": "...timestamp..."
+       "latest_scheduler_heartbeat": "2026-04-16T..."
      },
      "triggerer": {
        "status": "healthy",
-       "latest_triggerer_heartbeat": "...timestamp..."
+       "latest_triggerer_heartbeat": "2026-04-16T..."
      },
      "dag_processor": {
        "status": "healthy",
-       "latest_dag_processor_heartbeat": "...timestamp..."
+       "latest_dag_processor_heartbeat": "2026-04-16T..."
      }
    }
-
 
 .. _understand-architecture:
 
@@ -321,11 +371,11 @@ The following diagram shows how the charms interact:
    │  PgBouncer   │  (optional connection pooler)
    └──────┬───────┘
           │ postgres
-   ┌──────┴───────────────────────┐
-   │   Airflow Coordinator        │
-   │  • Runs DB migrations        │
-   │  • Generates airflow.cfg     │
-   │  • Manages secrets           │
+   ┌──────┴───────────────────────────────┐
+   │   Airflow Coordinator                │
+   │  • Runs DB migrations                │
+   │  • Generates airflow.cfg             │
+   │  • Manages secrets                   │
    └──┬────────┬───────────┬─────────┬────┘
       │        │           │         │  airflow-coordinator
    ┌──┴───┐ ┌──┴──────┐ ┌──┴──────┐ ┌┴────────┐
