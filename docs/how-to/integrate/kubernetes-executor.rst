@@ -2,12 +2,14 @@ Integrate with the Charmed Airflow Kubernetes Executor
 =============================================================
 
 The Airflow Kubernetes executor charm (``airflow-kubernetes-executor-k8s``) enables a Charmed Airflow
-deployment to run DAG tasks as individual Pods in a Kubernetes cluster. This provides strong
-workload isolation, elastic scaling, and fine-grained resource control per task. This guide walks
-you through deploying and configuring the Kubernetes executor charm, integrating it with your existing
+deployment to run DAG tasks as individual Pods in a Kubernetes cluster. This guide walks
+you through deploying and configuring the Airflow Kubernetes executor charm, integrating it with your existing
 Charmed Airflow solution, and verifying that tasks are being scheduled as Kubernetes Pods.
 
-**Prerequisites:** A working Charmed Airflow deployment with ``airflow-coordinator-k8s`` already
+Prerequisites
+---------------------------------------------
+
+A working Charmed Airflow deployment with ``airflow-coordinator-k8s`` already
 deployed and active.
 
 ----
@@ -20,8 +22,7 @@ You can deploy the charm using either ``juju deploy`` directly or a Terraform mo
 Option A: Deploy with Juju
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The charm requires Juju trust to create and manage Kubernetes resources (ConfigMaps and Secrets)
-in the cluster on behalf of Airflow:
+Deploy with `--trust` as the charm creates and manages Kubernetes resources:
 
 .. code-block:: bash
 
@@ -60,8 +61,7 @@ Then apply your changes:
 Configure the charm
 -----------------------------
 
-Before the charm becomes active, you must supply the required configuration options. Set them
-using ``juju config``:
+Supply the required configuration options.
 
 .. code-block:: bash
 
@@ -82,29 +82,19 @@ The full list of configuration options can be found in the `charm configuration 
 Integrate with the Charmed Airflow components
 ------------------------------------------------
 
-The executor charm communicates with ``airflow-coordinator-k8s`` over two integration endpoints.
-Both are required for the executor to function:
+1. Add the required integrations with the ``airflow-coordinator-k8s`` charm:
 
 .. code-block:: bash
 
    juju integrate airflow-kubernetes-executor-k8s:airflow-config airflow-coordinator-k8s
    juju integrate airflow-kubernetes-executor-k8s:airflow-executor-config airflow-coordinator-k8s
 
-The ``airflow-config`` relation shares Airflow connection details and credentials with the
-executor. The ``airflow-executor-config`` relation delivers the executor-specific pod template
-and Kubernetes configuration back to the coordinator, which Airflow uses when scheduling tasks.
-
-Wait for the units to settle. You can check status with:
-
-.. code-block:: bash
-
-   juju status --watch 5s
-
 All units should reach ``active/idle`` before proceeding.
 
-Because the Airflow scheduler process needs to talk to the Kubernetes API, the charm has to be trusted as well:
+2. The Airflow scheduler charm has to be trusted as well as its process interacts with the Kubernetes API:
 
 .. code-block:: bash
+
    juju trust airflow-scheduler-k8s --scope=cluster
 
 ----
@@ -148,33 +138,6 @@ Customising worker Pods with ``pod_override``
 Pod customisation can be done through Airflow's ``pod_override``
 feature. This lets you override resource requests, environment variables,
 tolerations, and any other Kubernetes Pod spec field on a per-task basis.
-
-In your DAG, use the ``executor_config`` parameter with a ``k8s.V1Pod`` specification:
-
-.. code-block:: python
-
-   from kubernetes.client import models as k8s
-   from airflow.decorators import task
-
-   @task(
-       executor_config={
-           "pod_override": k8s.V1Pod(
-               spec=k8s.V1PodSpec(
-                   containers=[
-                       k8s.V1Container(
-                           name="base",
-                           resources=k8s.V1ResourceRequirements(
-                               requests={"cpu": "500m", "memory": "512Mi"},
-                               limits={"cpu": "1", "memory": "1Gi"},
-                           ),
-                       )
-                   ]
-               )
-           )
-       }
-   )
-   def my_resource_intensive_task():
-       ...
 
 For the full reference on ``pod_override``, see the `upstream Airflow Kubernetes Executor
 documentation
