@@ -26,7 +26,7 @@ How ingress works in Charmed Airflow
 -------------------------------------
 
 The ``airflow-api-server-k8s`` charm uses the
-`ingress per app <https://charmhub.io/traefik-k8s/docs/how-to-configure-ingress-per-app>`_
+`ingress per app <https://charmhub.io/traefik-k8s/libraries/ingress>`_
 integration. When Traefik provides an ingress URL, two things happen
 automatically:
 
@@ -107,9 +107,6 @@ For example:
 
    http://10.64.140.43/airflow-airflow-api-server-k8s
 
-The charm detects this path prefix, passes it to the coordinator, and Airflow
-sets ``base_url`` accordingly so internal links work correctly.
-
 To configure path routing explicitly:
 
 .. code-block:: bash
@@ -146,7 +143,7 @@ To switch to subdomain routing:
    In subdomain mode there is no path prefix, so ``base_url`` in
    ``airflow.cfg`` uses the root path. Both modes are fully supported.
 
-See `Traefik K8s | Docs <https://charmhub.io/traefik-k8s/docs>`_ for all
+See `Traefik K8s | Configurations <https://charmhub.io/traefik-k8s/configurations>`_ for all
 available Traefik configuration options.
 
 Add TLS with self-signed certificates
@@ -179,7 +176,7 @@ The URL will now start with ``https://``:
 .. code-block:: json
 
    {
-     "proxied-endpoints": "{\"airflow-api-server-k8s\": {\"url\": \"https://10.64.140.43/airflow-airflow-api-server-k8s\"}}"
+     "proxied-endpoints": "{\"airflow-api-server-k8s\": {\"url\": \"https://<Load Balancer IP>/airflow-airflow-api-server-k8s\"}}"
    }
 
 .. note::
@@ -219,13 +216,13 @@ reachable from inside the VM. You have two options:
    .. code-block:: bash
 
       juju run traefik-k8s/0 show-proxied-endpoints
-      # e.g. http://10.64.140.43/airflow-airflow-api-server-k8s
+      # e.g. http://<Load Balancer IP>/airflow-airflow-api-server-k8s
 
 #. From your host machine, SSH into the Multipass VM with a port-forward:
 
    .. code-block:: bash
 
-      multipass exec <vm-name> -- sudo ssh -L 8080:10.64.140.43:80 localhost
+      sudo ssh -i <path-to-private-key> -L 8080:<Load Balancer IP>:80 ubuntu@<vm-ip>
 
 #. Open ``http://localhost:8080/airflow-airflow-api-server-k8s`` in your
    browser.
@@ -325,5 +322,5 @@ Further reading
 * `Traefik K8s charm <https://charmhub.io/traefik-k8s>`_
 * `Traefik K8s | Configuration reference <https://charmhub.io/traefik-k8s/docs>`_
 * `Self-signed certificates charm <https://charmhub.io/self-signed-certificates>`_
-* `Ingress per app interface <https://charmhub.io/traefik-k8s/docs/how-to-configure-ingress-per-app>`_
+* `Ingress per app interface <https://charmhub.io/traefik-k8s/libraries/ingress>`_
 
