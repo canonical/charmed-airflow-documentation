@@ -32,6 +32,7 @@ readthedocs
 redeclare
 rst
 sitemapindex
+subprocesses
 subproject
 subprojects
 SCons
@@ -40,6 +41,7 @@ tex
 texlive
 TOC
 toctree
+triggerer
 txt
 ulwazi
 uncomment(ing)?
