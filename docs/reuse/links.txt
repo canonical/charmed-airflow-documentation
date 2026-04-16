@@ -7,6 +7,7 @@
 .. _Juju: https://juju.is/
 .. _Terraform: https://www.terraform.io/
 .. _Traefik: https://traefik.io/
+.. _Traefik K8s: https://charmhub.io/traefik-k8s
 .. _Sphinx DataTables: https://sharm294.github.io/sphinx-datatables/
 .. _Sphinx design: https://sphinx-design.readthedocs.io/en/latest/
 .. _Sphinx documentation starter pack:
