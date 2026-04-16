@@ -1,7 +1,7 @@
-.. _deploy-airflow-tutorial:
+.. _Tutorial:
 
-Deploy Charmed Airflow
-======================
+Tutorial: Deploy Airflow with Juju
+==================================
 
 In this tutorial you will deploy a fully functional `Apache Airflow`_ cluster on
 Kubernetes using `Juju`_ charms. By the end you will have a running Airflow
@@ -32,7 +32,7 @@ Install and configure dependencies
 -----------------------------------
 
 Install k8s and Juju via concierge
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install concierge snap if you haven't already:
 
@@ -59,37 +59,6 @@ Deploy the charms
 
 The Charmed Airflow solution consists of several charms that work together.
 This section walks you through deploying each one and wiring them up.
-
-Deploy PostgreSQL and PgBouncer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Airflow requires a PostgreSQL database to store metadata. Deploy PostgreSQL
-and PgBouncer (connection pooler):
-
-.. code-block:: bash
-
-   juju deploy postgresql-k8s --channel=14/stable --trust \
-     --config profile=testing
-   juju deploy pgbouncer-k8s --trust
-
-Integrate PgBouncer with PostgreSQL:
-
-.. code-block:: bash
-
-   juju integrate pgbouncer-k8s:backend-database postgresql-k8s:database
-
-.. note::
-
-   **PgBouncer is optional.** If you prefer a simpler setup, you can skip
-   PgBouncer and integrate the coordinator directly with PostgreSQL:
-
-   .. code-block:: bash
-
-      juju integrate airflow-coordinator-k8s:postgres postgresql-k8s:database
-
-   PgBouncer is recommended for production workloads because it pools database
-   connections, reducing resource usage on PostgreSQL when many Airflow
-   components connect simultaneously.
 
 Deploy the Airflow Coordinator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -131,6 +100,25 @@ These charms map to the Airflow components:
    * - ``airflow-triggerer-k8s``
      - Handles deferred (asynchronous) tasks.
 
+Deploy PostgreSQL and PgBouncer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Airflow requires a PostgreSQL database to store metadata. Deploy PostgreSQL
+and PgBouncer (connection pooler):
+
+.. code-block:: bash
+
+   juju deploy postgresql-k8s --channel=14/stable --trust
+   juju deploy pgbouncer-k8s --trust
+
+.. note::
+
+   **PgBouncer is optional.** If you prefer a simpler setup, you can skip
+   PgBouncer.
+   PgBouncer is recommended for production workloads because it pools database
+   connections, reducing resource usage on PostgreSQL when many Airflow
+   components connect simultaneously.
+
 .. _integrate-charms:
 
 Integrate the charms
@@ -138,6 +126,12 @@ Integrate the charms
 
 Juju *integrations* (also called *relations*) connect the charms so they can
 exchange configuration, endpoints, and credentials automatically.
+
+Integrate PgBouncer with PostgreSQL:
+
+.. code-block:: bash
+
+   juju integrate pgbouncer-k8s:backend-database postgresql-k8s:database
 
 Connect the coordinator to the database
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -238,7 +232,7 @@ Use ``kubectl`` to forward a local port to the API server pod:
 
 .. code-block:: bash
 
-   microk8s kubectl port-forward -n airflow \
+   kubectl port-forward -n airflow \
      pod/airflow-api-server-k8s-0 8080:8080
 
 Then open your browser at ``http://localhost:8080``.
@@ -259,7 +253,7 @@ need to forward the port from inside the VM to your host.
 
    .. code-block:: bash
 
-      microk8s kubectl port-forward -n airflow \
+      kubectl port-forward -n airflow \
         pod/airflow-api-server-k8s-0 8080:8080 --address 0.0.0.0
 
 #. On your host machine, open ``http://<multipass-vm-ip>:8080`` in your
