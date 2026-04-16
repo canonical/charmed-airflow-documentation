@@ -12,8 +12,15 @@ Prerequisites
 -------------
 
 * A Juju controller (v3.1+) bootstrapped on a Kubernetes cluster.
-  See the :ref:`tutorial <deploy-airflow-tutorial>` for setup instructions.
+  See the :doc:`tutorial </tutorial/index>` for setup instructions.
 * `Terraform CLI <https://developer.hashicorp.com/terraform/install>`_ (v1.12+).
+
+Install Dependencies
+--------------------------------------------------
+
+.. code-block:: bash
+   
+   sudo snap install terraform --classic
 
 Create a Juju model
 -------------------
@@ -67,7 +74,7 @@ Initialise and apply:
 .. code-block:: bash
 
    terraform init
-   terraform apply -auto-approve
+   terraform apply -auto-approve --var-file="terraform.tfvars"
 
 This deploys all seven applications (PostgreSQL, PgBouncer, coordinator, API
 server, scheduler, DAG processor, triggerer) and wires up all integrations
