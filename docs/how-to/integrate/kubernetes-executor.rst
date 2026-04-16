@@ -53,7 +53,7 @@ Then apply your changes:
    terraform apply
 
 .. note::
-   If deploying with the `Charmed Airflow solution module <https://github.com/canonical/charmed-airflow-solutions/tree/track/3.1`_, you just need to set the ``executor``
+   If deploying with the `Charmed Airflow solution module <https://github.com/canonical/charmed-airflow-solutions>`_, you just need to set the ``executor``
    input variable to ``kubernetes`` and add the required configurations.
 
 ----
@@ -68,6 +68,11 @@ Supply the required configuration options.
    juju config airflow-kubernetes-executor-k8s \
      base_image=<your-airflow-oci-image> \
      namespace=<target-kubernetes-namespace>
+
+.. note::
+   The ``base_image`` should contain the same providers as the Airflow charms, we suggest you use the same image (``ubuntu/airflow``) as
+   base and customise on top.
+
 
 Optionally, customise the base name for worker Pods:
 
