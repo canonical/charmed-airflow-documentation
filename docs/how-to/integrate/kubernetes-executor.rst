@@ -30,8 +30,7 @@ in the cluster on behalf of Airflow:
 Option B: Deploy with the Terraform module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you manage your infrastructure with Terraform, use the module provided in the
-`airflow-kubernetes-executor-k8s-operator repository
+If you manage your infrastructure with Terraform, use the module provided `here 
 <https://github.com/canonical/airflow-kubernetes-executor-k8s-operator/tree/track/3.1/terraform>`_.
 
 Add the module to your Terraform configuration:
@@ -51,6 +50,10 @@ Then apply your changes:
 
    terraform init
    terraform apply
+
+.. note::
+   If deploying with the `Charmed Airflow solution module <https://github.com/canonical/charmed-airflow-solutions/tree/track/3.1`_, you just need to set the ``executor``
+   input variable to ``kubernetes`` and add the required configurations.
 
 ----
 
