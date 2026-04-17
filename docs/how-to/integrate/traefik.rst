@@ -13,7 +13,6 @@ This guide covers:
 * Deploying Traefik and connecting it to the API server.
 * Understanding how the two routing modes (path and subdomain) affect your URL.
 * Adding TLS with ``self-signed-certificates``.
-* Accessing the UI in different environments (local host, Multipass, remote).
 * Verifying the integration.
 
 Prerequisites
@@ -190,85 +189,13 @@ The URL will now start with ``https://``:
 Access the UI from different environments
 ------------------------------------------
 
-On the same host as the cluster
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If your deployment is running in a remote environment or a virtual machine, the Traefik IP address may not be immediately reachable from your local browser. In these scenarios, you must ensure your local machine has a network route to the ingress endpoint.
 
-If Juju is bootstrapped directly on your machine (e.g. with concierge or
-MicroK8s), the Traefik IP is reachable from your browser without any
-additional steps. Retrieve the URL and open it:
+Common methods for establishing this connection include:
 
-.. code-block:: bash
-
-   juju run traefik-k8s/0 show-proxied-endpoints
-
-Open the printed URL in your browser.
-
-On a Multipass VM
-~~~~~~~~~~~~~~~~~
-
-If your Kubernetes cluster runs inside a Multipass VM, the Traefik IP is only
-reachable from inside the VM. You have two options:
-
-**Option A — SSH port-forward from your host:**
-
-#. Find the Traefik IP:
-
-   .. code-block:: bash
-
-      juju run traefik-k8s/0 show-proxied-endpoints
-      # e.g. http://<Load Balancer IP>/airflow-airflow-api-server-k8s
-
-#. From your host machine, SSH into the Multipass VM with a port-forward:
-
-   .. code-block:: bash
-
-      sudo ssh -i <path-to-private-key> -L 8080:<Load Balancer IP>:80 ubuntu@<vm-ip>
-
-#. Open ``http://localhost:8080/airflow-airflow-api-server-k8s`` in your
-   browser.
-
-**Option B — Add a static route on your host:**
-
-#. Find the Multipass VM IP:
-
-   .. code-block:: bash
-
-      multipass list
-
-#. Add a route so your host can reach the cluster subnet directly:
-
-   .. code-block:: bash
-
-      sudo ip route add 10.64.140.0/24 via <vm-ip>
-
-#. Open the full Traefik URL directly in your browser.
-
-.. note::
-
-   For HTTPS on Multipass, use the Traefik IP with the HTTPS URL from
-   ``show-proxied-endpoints``. Accept the self-signed certificate warning in
-   your browser.
-
-On a remote server
-~~~~~~~~~~~~~~~~~~
-
-If the cluster runs on a remote server, open port 80 (or 443 for HTTPS) in
-the server's firewall and access the Traefik IP from your local browser:
-
-.. code-block:: bash
-
-   # On the remote server — allow inbound traffic on port 80/443
-   sudo ufw allow 80/tcp
-   sudo ufw allow 443/tcp
-
-Then open ``http://<server-public-ip>/<model>-airflow-api-server-k8s`` in
-your browser, substituting the real public IP.
-
-.. important::
-
-   Using ``self-signed-certificates`` on a publicly accessible server is not
-   sufficient security. Use a proper certificates provider for production
-   deployments.
+* **SSH Tunneling**: You can use an SSH tunnel to map the remote Traefik port to a port on your local machine. For a conceptual guide and syntax, see the `SSH Tunneling reference <https://www.ssh.com/academy/ssh/tunneling>`_.
+* **Static Routing**: You can configure a static route on your host machine to bridge the network gap between your host and the cluster subnet.
+* **Ingress Resolution**: For specific details on how the Traefik Ingress charm handles application endpoints, refer to the `Charmed Traefik Ingress guide <https://documentation.ubuntu.com/traefik-k8s-charm/latest/tutorial/tls-termination-using-a-local-ca/#reach-an-application-s-endpoint-with-ingress>`_.
 
 Verify the integration
 -----------------------
