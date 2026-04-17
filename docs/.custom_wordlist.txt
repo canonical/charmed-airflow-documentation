@@ -49,6 +49,7 @@ uncomment(ing)?
 utils
 uv
 VMs
+VM's
 WCAG
 whitespace
 whitespaces

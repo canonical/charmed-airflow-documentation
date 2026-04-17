@@ -5,7 +5,7 @@ Tutorial: Deploy Airflow with Juju
 
 In this tutorial you will deploy a fully functional `Apache Airflow`_ cluster on
 Kubernetes using `Juju`_ charms. By the end you will have a running Airflow
-instance with a web UI you can access from your browser.
+instance with an API Server UI you can access from your browser.
 
 What you'll need
 ----------------
@@ -13,7 +13,7 @@ What you'll need
 * Ubuntu 24.04 (or later).
 * A machine with at least a **4-core CPU**, **8 GB RAM**, and **30 GB** of free
   disk space.
-* A MicroK8s cluster (v1.29+) with a Juju controller bootstrapped on it.
+* A K8s cluster (v1.32+) with a Juju controller bootstrapped on it.
 
   See `Set up your deployment
   <https://documentation.ubuntu.com/juju/3.6/howto/manage-your-juju-deployment/set-up-your-juju-deployment-local-testing-and-development/>`_
@@ -23,9 +23,9 @@ What you'll do
 --------------
 
 #. Install and configure dependencies.
-#. Deploy the core Airflow charms and their database.
-#. Integrate the charms with each other.
-#. Access the Airflow web UI.
+#. Deploy the Airflow charms and their database.
+#. Integrate the charms.
+#. Access the Airflow API Server UI.
 #. Tear down the deployment.
 
 Install and configure dependencies
@@ -57,34 +57,33 @@ Create a dedicated model for the Airflow deployment:
 Deploy the charms
 -----------------
 
-The Charmed Airflow solution consists of several charms that work together.
-This section walks you through deploying each one and wiring them up.
+The Charmed Airflow solution consists of several charms that integrate.
+This section walks you through deploying each one and integrating them.
 
 Deploy PostgreSQL and PgBouncer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Airflow requires a PostgreSQL database to store metadata. Deploy PostgreSQL
-and PgBouncer (connection pooler):
+and PgBouncer (connection pooler for PostgreSQL) first:
 
 .. code-block:: bash
 
    juju deploy postgresql-k8s --channel=14/stable --trust
-   juju deploy pgbouncer-k8s --trust
+   juju deploy pgbouncer-k8s --channel=1/stable --trust
 
 .. note::
 
-   **PgBouncer is optional.** PgBouncer acts as a connection pooler, reducing
+   **PgBouncer is optional.** PgBouncer is a connection pooler, reducing
    the number of direct connections to PostgreSQL. It is recommended for
    production workloads but not required. If you skip PgBouncer, integrate the
-   coordinator directly with PostgreSQL instead of PgBouncer in the
+   Airflow Coordinator charm directly with PostgreSQL instead of PgBouncer in the
    integration step below.
 
 Deploy the Airflow Coordinator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The coordinator is the central configuration hub. It manages database
-migrations, generates and distributes the Airflow configuration, and stores
-cryptographic secrets.
+The Airflow Coordinator is the central configuration hub. It provisions required PostgreSQL database
+schemas and generates and distributes the Airflow configuration.
 
 .. code-block:: bash
 
@@ -111,7 +110,7 @@ These charms map to the Airflow components:
    * - Charm
      - Purpose
    * - ``airflow-api-server-k8s``
-     - Serves the Airflow REST API and the web UI (port 8080).
+     - Serves the Airflow dashboard UI.
    * - ``airflow-scheduler-k8s``
      - Schedules and triggers DAG runs.
    * - ``airflow-dag-processor-k8s``
@@ -127,15 +126,14 @@ Integrate the charms
 Juju *integrations* (also called *relations*) connect the charms so they can
 exchange configuration, endpoints, and credentials automatically.
 
-If you deployed PgBouncer, connect it to PostgreSQL first:
+If you deployed the PgBouncer charm, integrate it with the PostgreSQL charm first:
 
 .. code-block:: bash
 
    juju integrate pgbouncer-k8s:backend-database postgresql-k8s:database
 
-Connect the coordinator to the database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+Integrate the Airflow Coordinator with the database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 If you deployed PgBouncer (recommended):
 
 .. code-block:: bash
@@ -148,22 +146,22 @@ Or, if you chose to skip PgBouncer:
 
    juju integrate airflow-coordinator-k8s:postgres postgresql-k8s:database
 
-Connect the API server to the coordinator
+Integrate the API server with the Airflow Coordinator charm
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The API server and coordinator share a bidirectional integration: the API
-server sends its host and port information to the coordinator, and the
-coordinator distributes the unified Airflow configuration back.
+The API server integrates with the Airflow Coordinator to share its host and port 
+information. This allows the Airflow Coordinator to include these details in the centralized 
+``airflow.cfg``, which it then distributes across the entire cluster.
 
 .. code-block:: bash
 
    juju integrate airflow-coordinator-k8s:airflow-api-server \
      airflow-api-server-k8s:airflow-api-server
 
-Connect all core charms to the coordinator
+Integrate all core charms with the Airflow Coordinator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Every core charm receives its Airflow configuration from the coordinator
+Every core charm receives its Airflow configuration from the Airflow Coordinator
 through the ``airflow-coordinator`` integration:
 
 .. code-block:: bash
@@ -255,41 +253,18 @@ Access the Airflow UI
 The Airflow web UI is served by the API server charm on port **8080**. There
 are several ways to reach it depending on your environment.
 
-Option A: Port-forward from your local machine (simplest)
+Option A: Port-forward from your local machine or remote VM
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Use ``kubectl`` to forward a local port to the API server pod:
+You can forward traffic from your local machine to the API server pod. By default, this maps the pod's port **8080** to your local port **8080**. 
 
-.. code-block:: bash
+* **Local clusters:** Standard port-forwarding allows access via ``http://localhost:8080``.
+* **Remote/VM clusters (e.g., Multipass):** To reach the UI from your host machine, you must bind the command to all network interfaces using the ``--address 0.0.0.0`` flag. 
+You can then access the UI using the VM's IP address.
 
-   kubectl port-forward -n airflow \
-     pod/airflow-api-server-k8s-0 8080:8080
+For the exact command syntax and advanced configuration flags, refer to the official `kubectl port-forward documentation <https://kubernetes.io/docs/reference/kubectl/generated/kubectl_port-forward/>`_.
 
-Then open your browser at ``http://localhost:8080``.
-
-Option B: Port-forward with MicroK8s on Multipass
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If MicroK8s is running inside a `Multipass <https://multipass.run/>`_ VM, you
-need to forward the port from inside the VM to your host.
-
-#. Find the Multipass VM IP:
-
-   .. code-block:: bash
-
-      multipass list
-
-#. Inside the VM, run the port-forward:
-
-   .. code-block:: bash
-
-      kubectl port-forward -n airflow \
-        pod/airflow-api-server-k8s-0 8080:8080 --address 0.0.0.0
-
-#. On your host machine, open ``http://<multipass-vm-ip>:8080`` in your
-   browser.
-
-Option C: Use the Kubernetes service directly
+Option B: Use the Kubernetes service directly
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If your machine can reach the Kubernetes cluster network directly (for example,
@@ -303,7 +278,7 @@ when running on the same host as the cluster), query the pod IP:
 Then open ``http://<pod-ip>:8080`` in your browser.
 
 .. image:: images/airflow-login-ui.png
-   :alt: Airflow Web UI Login
+   :alt: Airflow API Server UI Login
    :align: center
 
 Retrieve the credentials from the API server pod:
@@ -320,7 +295,7 @@ Alternatively, search the API server logs:
    kubectl logs airflow-api-server-k8s-0 -c airflow-api-server -n airflow | grep -i password
 
 .. image:: images/airflow-ui.png
-   :alt: Airflow Web UI
+   :alt: Airflow API Server UI
    :align: center
 
 Verify the cluster health
@@ -356,54 +331,52 @@ Expected output:
 
 .. _understand-architecture:
 
-Understand how the charms work together
----------------------------------------
+Understanding how the charms work together
+------------------------------------------
 
 The following diagram shows how the charms interact:
 
 .. code-block:: text
 
-   ┌──────────────┐
-   │ PostgreSQL   │
-   └──────┬───────┘
-          │ database
-   ┌──────┴───────┐
-   │  PgBouncer   │  (optional connection pooler)
-   └──────┬───────┘
-          │ postgres
-   ┌──────┴───────────────────────────────┐
-   │   Airflow Coordinator                │
-   │  • Runs DB migrations                │
-   │  • Generates airflow.cfg             │
-   │  • Manages secrets                   │
-   └──┬────────┬───────────┬─────────┬────┘
+                 ┌──────────────┐
+                 │ PostgreSQL   │
+                 └──────┬───────┘
+                        │ database
+                 ┌──────┴───────┐
+                 │  PgBouncer   │  (optional connection pooler)
+                 └──────┬───────┘
+                        │ postgres
+   ┌────────────────────┴──────────────────────┐
+   │   Airflow Coordinator                     │
+   │  • Provisions PostgreSQL db schema        │
+   │  • Unifies and distributes ``airflow.cfg``│
+   └──┬────────┬───────────┬─────────┬─────────┘
       │        │           │         │  airflow-coordinator
    ┌──┴───┐ ┌──┴──────┐ ┌──┴──────┐ ┌┴────────┐
    │ API  │ │Scheduler│ │ DAG     │ │Triggerer│
    │Server│ └─────────┘ │Processor│ └─────────┘
    └──────┘             └─────────┘ 
 
-**Coordinator** is the brain of the deployment:
+**Airflow Coordinator** is the brain of the deployment:
 
 * On startup, it connects to PostgreSQL and runs ``airflow db migrate`` to
   initialise the metadata database.
-* It generates cryptographic secrets (Fernet key, JWT secret, session secret
-  key) and stores them as Juju secrets.
 * It renders a unified ``airflow.cfg`` from its Jinja2 template and pushes it
   to every core charm via the ``airflow-coordinator`` integration.
 
 **Core charms** (API server, scheduler, DAG processor, triggerer) all follow
 the same pattern:
 
-* They wait for the coordinator integration.
+* They wait for the Airflow Coordinator integration.
 * Once they receive the configuration, they write ``/opt/airflow/airflow.cfg``
   and start their respective Airflow service.
-* If the coordinator integration is removed, they stop the service and enter
+* If the Airflow Coordinator integration is removed, they stop the service and enter
   a blocked state.
 
-**API server** has an additional integration with the coordinator
+**API server** has an additional integration with the Airflow Coordinator
 (``airflow-api-server``) through which it sends its hostname and port. The
-coordinator uses this to set ``base_url`` in the Airflow configuration.
+Airflow Coordinator uses the provided hostname and port to set ``base_url`` 
+in the Airflow configuration.
 
 .. _tear-down:
 
