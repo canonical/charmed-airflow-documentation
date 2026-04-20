@@ -166,7 +166,7 @@ The Airflow web UI is served by the API server charm on port **8080**. There
 are several ways to reach it depending on your environment.
 
 - Using the API Server Unit IP directly.
-- Through traefik's External IP or subdomain. Refer to the :doc: `Traefik integration guide </how-to/integrate/traefik>` for details.
+- Through traefik's External IP or subdomain. Refer to the :doc:`Traefik integration guide </how-to/integrate/traefik>` for details.
 
 .. image:: images/airflow-login-ui.png
    :alt: Airflow API Server UI Login
