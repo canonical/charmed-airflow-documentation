@@ -102,12 +102,6 @@ These charms map to the Airflow components:
 Integrate the charms
 --------------------
 
-If you deployed the PgBouncer charm, integrate it with the PostgreSQL charm first:
-
-.. code-block:: bash
-
-   juju integrate pgbouncer-k8s:backend-database postgresql-k8s:database
-
 Integrate the Airflow Coordinator with the database
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
