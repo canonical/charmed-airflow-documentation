@@ -53,10 +53,6 @@ and PgBouncer (optionally for connection pooling for PostgreSQL) first:
 
       juju deploy pgbouncer-k8s --trust
 
-   If you skip PgBouncer, integrate the
-   Airflow Coordinator charm directly with PostgreSQL instead of PgBouncer in the
-   integration step below.
-
 Deploy the Airflow Coordinator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
