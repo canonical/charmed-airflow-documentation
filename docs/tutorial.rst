@@ -121,6 +121,7 @@ Integrate the Airflow Coordinator with the database
 
   .. code-block:: bash
 
+    juju integrate pgbouncer-k8s:database postgresql-k8s:database
     juju integrate airflow-coordinator-k8s:postgres pgbouncer-k8s:database
 
 Integrate the API server with the Airflow Coordinator charm
