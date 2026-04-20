@@ -1,12 +1,13 @@
 .. _Apache Airflow: https://airflow.apache.org/
 .. _Apache Airflow documentation: https://airflow.apache.org/docs/
 .. _Canonical Sphinx: https://github.com/canonical/canonical-sphinx
+.. _Charm Store: https://charmhub.io
 .. _Charmed Airflow: https://github.com/canonical/charmed-airflow-documentation
-.. _Charmed Airflow on GitHub: https://github.com/canonical/charmed-airflow-documentation
 .. _Diátaxis: https://diataxis.fr/
 .. _Juju: https://juju.is/
 .. _Terraform: https://www.terraform.io/
 .. _Traefik: https://traefik.io/
+.. _Set up your juju deployment: https://documentation.ubuntu.com/juju/3.6/howto/manage-your-juju-deployment/set-up-your-juju-deployment-local-testing-and-development/
 .. _Sphinx DataTables: https://sharm294.github.io/sphinx-datatables/
 .. _Sphinx design: https://sphinx-design.readthedocs.io/en/latest/
 .. _Sphinx documentation starter pack:

@@ -1,6 +1,6 @@
 .. _deploy-airflow-tutorial:
 
-Tutorial: Deploy Airflow with Juju
+Get Started
 ==================================
 
 In this tutorial you will deploy a fully functional `Apache Airflow`_ cluster on
@@ -15,8 +15,7 @@ What you'll need
   disk space.
 * A K8s cluster (v1.32+) with a Juju controller bootstrapped on it.
 
-  See `Set up your deployment
-  <https://documentation.ubuntu.com/juju/3.6/howto/manage-your-juju-deployment/set-up-your-juju-deployment-local-testing-and-development/>`_
+  See `Set up your juju deployment`_
   for a step-by-step guide.
 
 What you'll do
@@ -42,7 +41,7 @@ and PgBouncer (optionally for connection pooling for PostgreSQL) first:
 
 .. code-block:: bash
 
-   juju deploy postgresql-k8s --channel=14/stable --trust
+   juju deploy postgresql-k8s --trust
 
 .. note::
 
@@ -52,7 +51,7 @@ and PgBouncer (optionally for connection pooling for PostgreSQL) first:
 
    .. code-block:: bash
 
-      juju deploy pgbouncer-k8s --channel=1/stable --trust
+      juju deploy pgbouncer-k8s --trust
 
    If you skip PgBouncer, integrate the
    Airflow Coordinator charm directly with PostgreSQL instead of PgBouncer in the
@@ -66,7 +65,7 @@ schemas and generates and distributes the Airflow configuration.
 
 .. code-block:: bash
 
-   juju deploy airflow-coordinator-k8s --channel=3.1/edge
+   juju deploy airflow-coordinator-k8s
 
 Deploy the core Airflow components
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,10 +74,15 @@ Deploy the four core Airflow workload charms:
 
 .. code-block:: bash
 
-   juju deploy airflow-api-server-k8s --channel=3.1/edge
-   juju deploy airflow-scheduler-k8s --channel=3.1/edge
-   juju deploy airflow-dag-processor-k8s --channel=3.1/edge
-   juju deploy airflow-triggerer-k8s --channel=3.1/edge
+   juju deploy airflow-api-server-k8s
+   juju deploy airflow-scheduler-k8s
+   juju deploy airflow-dag-processor-k8s
+   juju deploy airflow-triggerer-k8s
+
+.. note::
+
+  This tutorial deploys the latest supported versions of the Airflow Charms.
+  To use other versions, refer to the `Charm Store`_.
 
 These charms map to the Airflow components:
 
