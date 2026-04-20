@@ -4,7 +4,7 @@ Deploy with Terraform
 =====================
 
 This guide shows how to deploy Charmed Airflow using `Terraform`_ and the
-`Juju Terraform provider <https://registry.terraform.io/providers/juju/juju/latest/docs>`_.
+`Juju Terraform Provider`_.
 Terraform automates the deployment of all charms and their integrations in a
 single, reproducible plan.
 
@@ -13,7 +13,7 @@ Prerequisites
 
 * A Juju controller (v3.1+) bootstrapped on a Kubernetes cluster.
   See the :doc:`tutorial </tutorial/index>` for setup instructions.
-* `Terraform CLI <https://developer.hashicorp.com/terraform/install>`_ (v1.12+).
+* `Terraform CLI`_ (v1.12+).
 
 
 Clone the solutions repository
@@ -135,7 +135,7 @@ All configurable parameters follow this pattern:
    }
 
 See the
-`charmed-airflow-solutions README <https://github.com/canonical/charmed-airflow-solutions/tree/track/3.1/modules/charmed-airflow/README.md>`_
+`Charmed Airflow Solutions`_
 for the full variable reference.
 
 Access the Airflow UI
@@ -154,3 +154,12 @@ To remove the deployment:
    terraform destroy -auto-approve -var-file="terraform.tfvars"
 
 This removes all charmed applications and integrations from the model.
+
+Next steps
+----------
+
+* Explore the `Charmed Airflow Solutions`_ repository for more information.
+* :doc:`Integrate with Traefik </how-to/integrate/traefik>` for external HTTP/HTTPS
+  access.
+* :doc:`Integrate with Git Integrator </how-to/integrate/git-integrator>` to sync
+  DAGs from a Git repository.

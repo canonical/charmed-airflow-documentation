@@ -3,9 +3,12 @@
 .. _Canonical Sphinx: https://github.com/canonical/canonical-sphinx
 .. _Charmed Airflow: https://github.com/canonical/charmed-airflow-documentation
 .. _Charmed Airflow on GitHub: https://github.com/canonical/charmed-airflow-documentation
+.. _Charmed Airflow Solutions: https://github.com/canonical/charmed-airflow-solutions/tree/track/3.1/modules/charmed-airflow/README.md
 .. _Diátaxis: https://diataxis.fr/
 .. _Juju: https://juju.is/
+.. _Juju Terraform Provider: https://registry.terraform.io/providers/juju/juju/latest/docs
 .. _Terraform: https://www.terraform.io/
+.. _Terraform CLI: https://developer.hashicorp.com/terraform/install
 .. _Traefik: https://traefik.io/
 .. _Sphinx DataTables: https://sharm294.github.io/sphinx-datatables/
 .. _Sphinx design: https://sphinx-design.readthedocs.io/en/latest/
