@@ -81,3 +81,5 @@ Diátaxis
 preconfigured
 venv
 rtd
+triggerer
+asyncio
