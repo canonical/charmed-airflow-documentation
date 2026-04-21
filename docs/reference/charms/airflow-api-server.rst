@@ -14,7 +14,7 @@ Core responsibilities
 ---------------------
 
 * Serving the `Airflow REST API`_ for programmatic access to the Airflow platform.
-* Exposing the Airflow web UI for browser-based interaction.
+* Exposing the Airflow API Server UI for browser-based interaction.
 * Authenticating and authorising API requests.
 * Integrating with the coordinator charm for database connectivity, shared Fernet keys, and
   Airflow configuration.
