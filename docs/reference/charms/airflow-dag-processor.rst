@@ -7,9 +7,9 @@ parsing DAG files and scheduling tasks. The standalone DAG processor separates t
 it takes over responsibility for parsing and serialising DAG files into the metadata database,
 allowing the scheduler to focus exclusively on scheduling.
 
-Within the Charmed Airflow solution, the DAG processor is an optional component that becomes
-valuable at scale, when the volume of DAG files would otherwise slow down the scheduler's
-scheduling loop. It integrates with ``airflow-coordinator-k8s`` for database access and shared
+Within the Charmed Airflow solution, the DAG processor component becomes valuable at scale,
+when the volume of DAG files would otherwise slow down the scheduler's scheduling loop.
+It integrates with ``airflow-coordinator-k8s`` for database access and shared
 Airflow configuration.
 
 Core responsibilities
