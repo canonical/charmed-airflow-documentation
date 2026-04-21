@@ -18,12 +18,6 @@ Prerequisites
 A running Charmed Airflow deployment. If you haven't deployed it yet, follow
 the :doc:`tutorial </tutorial/index>` first.
 
-How ingress works in Charmed Airflow
--------------------------------------
-
-The ``airflow-api-server-k8s`` charm uses the
-`Ingress`_
-integration.
 
 Deploy and integrate Traefik
 -----------------------------
