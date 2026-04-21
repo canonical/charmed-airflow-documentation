@@ -1,3 +1,5 @@
+.. _Airflow Kubernetes Executor documentation: https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/kubernetes_executor.html#pod-override
+.. _Airflow Kubernetes executor charm configuration page: https://charmhub.io/airflow-kubernetes-executor-k8s/configurations
 .. _Apache Airflow: https://airflow.apache.org/
 .. _Apache Airflow documentation: https://airflow.apache.org/docs/
 .. _Canonical Sphinx: https://github.com/canonical/canonical-sphinx

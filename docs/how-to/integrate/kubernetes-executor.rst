@@ -31,30 +31,7 @@ Deploy with `--trust` as the charm creates and manages Kubernetes resources:
 Option B: Deploy with the Terraform module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you manage your infrastructure with Terraform, use the module provided `here 
-<https://github.com/canonical/airflow-kubernetes-executor-k8s-operator/tree/track/3.1/terraform>`_.
-
-Add the module to your Terraform configuration:
-
-.. code-block:: hcl
-
-   module "airflow_kubernetes_executor" {
-     source = "git::https://github.com/canonical/airflow-kubernetes-executor-k8s-operator//terraform?ref=track/3.1"
-
-     # Pass required configuration as module variables.
-     # Refer to the module's variables.tf for all available inputs.
-   }
-
-Then apply your changes:
-
-.. code-block:: bash
-
-   terraform init
-   terraform apply
-
-.. note::
-   If deploying with the `Charmed Airflow solution module <https://github.com/canonical/charmed-airflow-solutions>`_, you just need to set the ``executor``
-   input variable to ``kubernetes`` and add the required configurations.
+If you manage your infrastructure with Terraform, refer to the :doc:`Deploy with Terraform </how-to/deploy-with-terraform>` for details.
 
 ----
 
@@ -80,7 +57,7 @@ Optionally, customise the base name for worker Pods:
 
    juju config airflow-kubernetes-executor-k8s pod_name=my-airflow-worker
 
-The full list of configuration options can be found in the `charm configuration page <https://charmhub.io/airflow-kubernetes-executor-k8s/configurations>`_.
+The full list of configuration options can be found in the `Airflow Kubernetes executor charm configuration page`_.
 
 ----
 
@@ -144,16 +121,4 @@ Pod customisation can be done through Airflow's ``pod_override``
 feature. This lets you override resource requests, environment variables,
 node affinity features, and any other Kubernetes Pod spec field on a per-task basis.
 
-For the full reference on ``pod_override``, see the `upstream Airflow Kubernetes Executor
-documentation
-<https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/kubernetes_executor.html#pod-override>`_.
-
-----
-
-Reference
-----------
-
-- `airflow-kubernetes-executor-k8s-operator on GitHub <https://github.com/canonical/airflow-kubernetes-executor-k8s-operator>`_
-- `Terraform module <https://github.com/canonical/airflow-kubernetes-executor-k8s-operator/tree/track/3.1/terraform>`_
-- `Airflow Kubernetes Executor — upstream documentation <https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/kubernetes_executor.html>`_
-- `Pod override reference <https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/kubernetes_executor.html#pod-override>`_
+For the full reference on ``pod_override``, see the `Airflow Kubernetes Executor documentation`_.
