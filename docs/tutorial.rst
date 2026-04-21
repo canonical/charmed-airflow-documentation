@@ -56,8 +56,7 @@ and PgBouncer (optionally for connection pooling for PostgreSQL) first:
 Deploy the Airflow Coordinator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Airflow Coordinator is the central configuration hub. It provisions required PostgreSQL database
-schemas and generates and distributes the Airflow configuration.
+The Airflow Coordinator is the central configuration hub. It generates and distributes the Airflow configuration.
 
 .. code-block:: bash
 
