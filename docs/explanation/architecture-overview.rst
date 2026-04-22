@@ -127,7 +127,7 @@ active state:
 * ``airflow-api-server`` – used by the coordinator to collect connection
   information about the API server so it can be embedded in the shared
   configuration.
-* ``postgresql_client`` – used by the coordinator to obtain credentials for
+* ``postgresql`` – used by the coordinator to obtain credentials for
   the PostgreSQL metadata database, which are then propagated to the core
   charms.
 * ``ingress`` – used by the API server to obtain a proxied, externally
