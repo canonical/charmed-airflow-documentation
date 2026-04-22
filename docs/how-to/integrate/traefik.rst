@@ -19,7 +19,7 @@ Prerequisites
   the :doc:`Tutorial </tutorial/index>` or :doc:`Deploy with Terraform </how-to/deploy-with-terraform>` first.
 
 * A Kubernetes cluster with a load balancer configured. Refer to your kubernetes distribution's documentation to enable
-  load balancer support (for example, the `Canonical K8s load balancer <https://documentation.ubuntu.com/canonical-kubernetes/latest/snap/howto/networking/default-loadbalancer/>`_).
+  load balancer support (for example, the `Canonical K8s load balancer`_).
 
 
 Deploy and integrate Traefik
