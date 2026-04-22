@@ -33,11 +33,11 @@ Deploy the charms
 
 This section walks you through deploying and integrating the charms that comprise the Charmed Airflow solution.
 
-Deploy PostgreSQL and PgBouncer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Deploy PostgreSQL and PgBouncer Charms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Airflow requires a PostgreSQL database to store metadata. Deploy PostgreSQL
-and PgBouncer (optionally for connection pooling for PostgreSQL) first:
+Airflow requires a PostgreSQL database to store metadata. Deploy the PostgreSQL
+and PgBouncer charms (optionally for connection pooling for the PostgreSQL charm) first:
 
 .. code-block:: bash
 
@@ -45,8 +45,8 @@ and PgBouncer (optionally for connection pooling for PostgreSQL) first:
 
 .. note::
 
-   **PgBouncer is optional.** PgBouncer is a connection pooler, reducing
-   the number of direct connections to PostgreSQL. It is recommended for
+   **PgBouncer charm is optional.** The PgBouncer charm is a connection pooler, reducing
+   the number of direct connections to the PostgreSQL charm. It is recommended for
    production workloads but not required. 
 
    .. code-block:: bash
@@ -110,7 +110,7 @@ Integrate the Airflow Coordinator with the database
 
 .. note::
 
-  If you deployed PgBouncer (recommended):
+  If you deployed the PgBouncer charm (recommended):
 
   .. code-block:: bash
 
@@ -166,6 +166,8 @@ are several ways to reach it depending on your environment.
 
 - Using the API Server Unit IP directly.
 - Through traefik's External IP or subdomain. Refer to the :doc:`Traefik integration guide </how-to/integrate/traefik>` for details.
+
+Once done, you are all set to start navigating the dashboard:
 
 .. image:: images/airflow-login-ui.png
    :alt: Airflow API Server UI Login
