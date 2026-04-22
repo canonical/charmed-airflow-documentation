@@ -167,8 +167,6 @@ are several ways to reach it depending on your environment.
 - Using the API Server Unit IP directly.
 - Through traefik's External IP or subdomain. Refer to the :doc:`Traefik integration guide </how-to/integrate/traefik>` for details.
 
-Once done, you are all set to start navigating the dashboard:
-
 .. image:: images/airflow-login-ui.png
    :alt: Airflow API Server UI Login
    :align: center
@@ -185,6 +183,8 @@ Alternatively, search the API server logs:
 .. code-block:: bash
 
    kubectl logs airflow-api-server-k8s-0 -c airflow-api-server -n airflow | grep -i password
+
+Once done, you are all set to start navigating the dashboard:
 
 .. image:: images/airflow-ui.png
    :alt: Airflow API Server UI
