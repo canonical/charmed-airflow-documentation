@@ -3,10 +3,13 @@
 .. _Apache Airflow: https://airflow.apache.org/
 .. _Apache Airflow documentation: https://airflow.apache.org/docs/
 .. _Canonical Sphinx: https://github.com/canonical/canonical-sphinx
+.. _CNCF-certified Kubernetes: https://www.cncf.io/training/certification/software-conformance/
 .. _Charmed Airflow: https://github.com/canonical/charmed-airflow-documentation
 .. _Charmed Airflow on GitHub: https://github.com/canonical/charmed-airflow-documentation
 .. _Diátaxis: https://diataxis.fr/
 .. _Juju: https://juju.is/
+.. _Juju integrations: https://documentation.ubuntu.com/juju/3.6/reference/relation/
+.. _PostgreSQL: https://charmhub.io/postgresql-k8s
 .. _Terraform: https://www.terraform.io/
 .. _Traefik: https://traefik.io/
 .. _Sphinx DataTables: https://sharm294.github.io/sphinx-datatables/
