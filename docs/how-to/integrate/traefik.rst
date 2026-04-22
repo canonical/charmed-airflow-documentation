@@ -15,8 +15,11 @@ This guide covers:
 Prerequisites
 -------------
 
-A running Charmed Airflow deployment. If you haven't deployed it yet, follow
-the :doc:`Tutorial </tutorial/index>` or :doc:`How-to guides: Deploy with Terraform </how-to/deploy-with-terraform>` first.
+* A running Charmed Airflow deployment. If you haven't deployed it yet, follow
+  the :doc:`Tutorial </tutorial/index>` or :doc:`Deploy with Terraform </how-to/deploy-with-terraform>` first.
+
+* A Kubernetes cluster with a load balancer configured. Refer to your kubernetes distribution's documentation to enable
+  load balancer support (for example, the `Canonical K8s load balancer <https://documentation.ubuntu.com/canonical-kubernetes/latest/snap/howto/networking/default-loadbalancer/>`_).
 
 
 Deploy and integrate Traefik
