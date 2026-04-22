@@ -30,7 +30,7 @@ module:
 Deploy with the Local Executor (default)
 ----------------------------------------
 
-The default deployment uses Airflow's **Local Executor**, where the scheduler
+The default deployment uses Airflow's **Local Executor**, where the Airflow Scheduler
 runs tasks in local subprocesses.
 
 Create a ``terraform.tfvars`` file:
@@ -55,7 +55,7 @@ Initialise and apply:
    terraform init
    terraform apply --var-file="terraform.tfvars"
 
-This deploys all seven applications (PostgreSQL, PgBouncer, Airflow Coordinator, Airflow API
+This deploys all seven application charms (PostgreSQL, PgBouncer, Airflow Coordinator, Airflow API
 Server, Airflow Scheduler, Airflow DAG Processor, Airflow Triggerer) and integrates the applications
 automatically.
 
