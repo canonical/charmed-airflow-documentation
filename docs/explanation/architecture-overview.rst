@@ -1,14 +1,12 @@
 Architecture overview
 =====================
 
-Charmed Airflow is an open source cloud-native solution that allows
-the deployment of `Apache Airflow`_, as well as day 2
-operations over the deployment.
+Charmed Airflow is an open source, cloud-native solution that helps you
+deploy `Apache Airflow`_ in a charmed way and operate it throughout its
+lifecycle.
 
-This document describes the layers that make up a Charmed Airflow deployment, the
-role of each component, and how the components are connected.
-
-The following provides a high-level view of a Charmed Airflow deployment:
+This document describes the layers that make it up, the role of each
+component, and how those components are connected.
 
 .. figure:: ../images/architecture-overview.png
    :alt: Charmed Airflow architecture layers, from infrastructure to components.
