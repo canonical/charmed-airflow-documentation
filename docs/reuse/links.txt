@@ -6,10 +6,14 @@
 .. _Canonical Sphinx: https://github.com/canonical/canonical-sphinx
 .. _Charm Store: https://charmhub.io
 .. _Charmed Airflow: https://github.com/canonical/charmed-airflow-documentation
+.. _Charmed Airflow on GitHub: https://github.com/canonical/charmed-airflow-documentation
+.. _Charmed Airflow Solutions: https://github.com/canonical/charmed-airflow-solutions/tree/track/3.1/modules/charmed-airflow/README.md
 .. _Diátaxis: https://diataxis.fr/
 .. _Ingress: https://charmhub.io/traefik-k8s/libraries/ingress
 .. _Juju: https://juju.is/
+.. _Juju Terraform Provider: https://registry.terraform.io/providers/juju/juju/latest/docs
 .. _Terraform: https://www.terraform.io/
+.. _Terraform CLI: https://developer.hashicorp.com/terraform/install
 .. _Traefik: https://traefik.io/
 .. _Set up your juju deployment: https://documentation.ubuntu.com/juju/3.6/howto/manage-your-juju-deployment/set-up-your-juju-deployment-local-testing-and-development/
 .. _Traefik documentation: https://doc.traefik.io/traefik/

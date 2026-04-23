@@ -35,6 +35,7 @@ readthedocs
 redeclare
 rst
 sitemapindex
+subprocesses
 subproject
 subprojects
 SCons
