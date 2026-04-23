@@ -4,7 +4,10 @@
 .. _Charmed Airflow: https://github.com/canonical/charmed-airflow-documentation
 .. _Charmed Airflow on GitHub: https://github.com/canonical/charmed-airflow-documentation
 .. _Diátaxis: https://diataxis.fr/
+.. _Git Integrator: https://charmhub.io/git-integrator
 .. _Juju: https://juju.is/
+.. _Juju user secret: https://documentation.ubuntu.com/juju/en/latest/reference/secret/
+.. _S3 Integrator: https://charmhub.io/s3-integrator
 .. _Terraform: https://www.terraform.io/
 .. _Traefik: https://traefik.io/
 .. _Sphinx DataTables: https://sharm294.github.io/sphinx-datatables/

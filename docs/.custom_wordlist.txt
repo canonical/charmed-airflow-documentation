@@ -78,6 +78,9 @@ Makefile
 rediraffe
 retrigger(ing)?
 Diátaxis
+MinIO
+S3
+s3
 preconfigured
 venv
 rtd
