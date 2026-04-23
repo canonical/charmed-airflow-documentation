@@ -1,26 +1,18 @@
 Architecture overview
 =====================
 
-Charmed Airflow is a Canonical operator-driven distribution of
-`Apache Airflow`_ for Kubernetes. Each Airflow service runs as its own
-charm, so you can deploy, scale, and upgrade the pieces of an Airflow
-deployment independently instead of managing a single monolithic
-installation.
+Charmed Airflow is an open source cloud-native solution that allows
+the deployment of `Apache Airflow`_, as well as day 2
+operations over the deployment.
 
-This page describes the layers that make up a Charmed Airflow deployment, the
+This document describes the layers that make up a Charmed Airflow deployment, the
 role of each component, and how the components are connected.
 
-System architecture overview
-----------------------------
-
-Charmed Airflow is a cloud-native solution that integrates several components
-in different layers.
+The following provides a high-level view of a Charmed Airflow deployment:
 
 .. figure:: ../images/architecture-overview.png
    :alt: Charmed Airflow architecture layers, from infrastructure to components.
    :align: center
-
-   High-level view of a Charmed Airflow deployment.
 
 From the diagram above:
 
@@ -28,7 +20,7 @@ From the diagram above:
   `CNCF-certified Kubernetes`_ distribution, whether on public cloud, private
   cloud, self-hosted infrastructure, or a local development cluster.
 * **Ingress layer.** `Traefik`_ (``traefik-k8s``) terminates and routes
-  external traffic to the Airflow web interface and REST API.
+  external traffic to the Airflow web UI and REST API.
 * **Database layer.** `PostgreSQL`_ (``postgresql-k8s``) provides the
   persistent metadata store that Airflow uses to track DAGs, task instances,
   and run history.
@@ -74,14 +66,14 @@ Support charms
 
 .. _coordinator-charm:
 
-**Airflow Coordinator** (``airflow-coordinator-k8s``) is the central support
+* **Airflow Coordinator** (``airflow-coordinator-k8s``) is the central support
 charm. It gathers configuration from every source in the deployment — user
 configuration, defaults, database credentials, executor settings, and DAG
 source integrators — merges it into a single consistent Airflow
 configuration, and shares it with each core charm. As a result, the core
 charms never need to consume those relations directly.
 
-**Airflow Executor charms** configure how Airflow schedules and runs DAG
+* **Airflow Executor charms** configure how Airflow schedules and runs DAG
 tasks. Each executor charm advertises an executor-specific configuration
 (such as a Pod template) to the coordinator, which forwards it to the core
 charms. A deployment can use different executor charms depending on the
@@ -104,16 +96,12 @@ DAG distribution without baking DAGs into container images.
 Integrations
 ------------
 
-Charmed Airflow components communicate through `Juju integrations`_, which
-are typed relations backed by well-defined interfaces. The diagram below
-shows the integrations that connect the components of a Charmed Airflow
-deployment.
+Charmed Airflow components communicate through `Juju integrations`_, The diagram below
+shows the integrations that connect the components of a Charmed Airflow deployment.
 
 .. figure:: ../images/integrations.png
    :alt: Integrations between the Charmed Airflow components.
    :align: center
-
-   Integrations between Charmed Airflow components and their dependencies.
 
 Required integrations
 ~~~~~~~~~~~~~~~~~~~~~
@@ -136,8 +124,7 @@ active state:
 Optional integrations
 ~~~~~~~~~~~~~~~~~~~~~
 
-The following integrations enable optional capabilities. They can be added
-and removed at any time without re-deploying the core charms:
+The following integrations enable optional capabilities.
 
 * ``airflow-kubernetes-executor-config`` – used by the coordinator to collect
   the configuration required by the Kubernetes executor, including the Pod
