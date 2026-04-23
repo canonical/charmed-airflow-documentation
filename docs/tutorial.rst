@@ -53,8 +53,8 @@ and PgBouncer charms (optionally for connection pooling for the PostgreSQL charm
 
       juju deploy pgbouncer-k8s --trust
 
-Deploy the Airflow Coordinator
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Deploy the Airflow Coordinator charm
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Airflow Coordinator is the central configuration hub. It generates and distributes the Airflow configuration.
 
@@ -101,8 +101,8 @@ These charms map to the Airflow components:
 Integrate the charms
 --------------------
 
-Integrate the Airflow Coordinator with the database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Integrate the Airflow Coordinator charm with the database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -117,8 +117,8 @@ Integrate the Airflow Coordinator with the database
     juju integrate pgbouncer-k8s:database postgresql-k8s:database
     juju integrate airflow-coordinator-k8s:postgres pgbouncer-k8s:database
 
-Integrate the API server with the Airflow Coordinator charm
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Integrate the API server charm with the Airflow Coordinator charm
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The API server integrates with the Airflow Coordinator to share its host and port 
 information. This allows the Airflow Coordinator to include these details in the centralized 
@@ -129,10 +129,10 @@ information. This allows the Airflow Coordinator to include these details in the
    juju integrate airflow-coordinator-k8s:airflow-api-server \
      airflow-api-server-k8s:airflow-api-server
 
-Integrate all core charms with the Airflow Coordinator
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Integrate all core charms with the Airflow Coordinator charm
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Every core charm receives its Airflow configuration from the Airflow Coordinator
+Every core charm receives its Airflow configuration from the Airflow Coordinator charm
 through the ``airflow-coordinator`` integration:
 
 .. code-block:: bash
