@@ -28,7 +28,3 @@ welcomes community contributions, suggestions, fixes, and constructive feedback.
 * `Code of conduct`_
 * `Join the Discourse community forum`_
 * `Contribute on GitHub`_
-
-.. _Code of conduct: https://ubuntu.com/community/code-of-conduct
-.. _Join the Discourse community forum: https://discourse.charmhub.io
-.. _Contribute on GitHub: https://github.com/canonical/airflow-coordinator-k8s-operator
