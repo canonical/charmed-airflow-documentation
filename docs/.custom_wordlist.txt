@@ -11,6 +11,7 @@ freefont
 github
 GPG
 gyre
+hostnames
 hotfix(es)?
 https
 html
@@ -32,6 +33,7 @@ readthedocs
 redeclare
 rst
 sitemapindex
+subprocesses
 subproject
 subprojects
 SCons
@@ -40,6 +42,7 @@ tex
 texlive
 TOC
 toctree
+triggerer
 txt
 ulwazi
 uncomment(ing)?
@@ -78,6 +81,15 @@ Makefile
 rediraffe
 retrigger(ing)?
 Diátaxis
+nip
+RBAC
+Subdomain
+subdomain
+TLS
+Termination
+termination
+traefik
+Traefik
 preconfigured
 venv
 rtd
