@@ -2,8 +2,8 @@ Charmed Airflow Kubernetes Executor
 =====================================
 
 ``airflow-kubernetes-executor-k8s`` is a Kubernetes charm that enables a Charmed Airflow
-deployment to run DAG task instances as individual Pods in a Kubernetes cluster. It implements
-the Airflow Kubernetes Executor, providing strong workload isolation, elastic capacity, and
+deployment to run DAG task instances as individual Pods in a Kubernetes cluster. It supports
+configuring the Airflow Kubernetes Executor, providing strong workload isolation, elastic capacity, and
 per-task resource customisation.
 
 The charm manages the Kubernetes resources required by worker Pods — a ConfigMap and a Secret —
@@ -30,7 +30,3 @@ welcomes community contributions, suggestions, fixes, and constructive feedback.
 * `Code of conduct`_
 * `Join the Discourse community forum`_
 * `Contribute on GitHub`_
-
-.. _Code of conduct: https://ubuntu.com/community/code-of-conduct
-.. _Join the Discourse community forum: https://discourse.charmhub.io
-.. _Contribute on GitHub: https://github.com/canonical/airflow-kubernetes-executor-k8s-operator
