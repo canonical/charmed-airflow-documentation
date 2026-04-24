@@ -26,64 +26,9 @@ repository, and integrate each with Charmed Airflow independently.
 Configure the charm
 --------------------
 
-Public repository
-~~~~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-   juju config git-integrator \
-     repository_url=https://github.com/my-org/my-dags.git \
-     path=dags \
-     tracking_ref=main
-
-Private repository — HTTPS credentials
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Create a `Juju user secret`_ containing your personal access token. The
-``juju add-secret`` command prints the secret URI — note it down:
-
-.. code-block:: bash
-
-   juju add-secret my-pat credentials-personal-access-token=<token>
-
-Grant access and configure the charm:
-
-.. code-block:: bash
-
-   juju grant-secret my-pat git-integrator
-
-   juju config git-integrator \
-     repository_url=https://github.com/my-org/my-dags.git \
-     authentication_method=credentials \
-     credentials_username=<username> \
-     credentials_personal_access_token_secret=<secret-uri>
-
-Private repository — SSH
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Create a Juju user secret containing your SSH private key. The
-``juju add-secret`` command prints the secret URI — note it down:
-
-.. code-block:: bash
-
-   juju add-secret my-ssh-key ssh-private-key="$(cat ~/.ssh/id_ed25519)"
-
-Grant access and configure the charm:
-
-.. code-block:: bash
-
-   juju grant-secret my-ssh-key git-integrator
-
-   juju config git-integrator \
-     repository_url=git@github.com:my-org/my-dags.git \
-     authentication_method=ssh \
-     ssh_private_key_secret=<secret-uri>
-
-Optionally, enable strict host key checking:
-
-.. code-block:: bash
-
-   juju config git-integrator ssh_strict_host_key_checking=true
+For full configuration options, including public and private repository
+authentication (HTTPS credentials and SSH), see the `Git Integrator`_
+documentation on Charmhub.
 
 Integrate with Charmed Airflow
 -------------------------------
