@@ -5,7 +5,7 @@ See [Official documentation](https://canonical-charmed-airflow.readthedocs-hoste
 
 ## Get started
 
-CKF documentation is based on [Canonical's Sphinx starter pack](https://github.com/canonical/sphinx-docs-starter-pack).
+This documentation is based on [Canonical's Sphinx starter pack](https://github.com/canonical/sphinx-docs-starter-pack).
 See [its documentation](https://canonical-starter-pack.readthedocs-hosted.com/latest/) for more details on how to build and customize it, run automatic checks, and explore other available configurations.
 
 ### Build it
