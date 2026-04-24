@@ -2,7 +2,7 @@ Architecture overview
 =====================
 
 Charmed Airflow is an open source, cloud-native solution that helps you
-deploy `Apache Airflow`_ in a charmed way and operate it throughout its
+deploy `Apache Airflow`_ on Kubernetes using Juju and operate it throughout its
 lifecycle.
 
 This document describes the layers that make it up, the role of each
@@ -17,8 +17,8 @@ From the diagram above:
 * **Infrastructure layer.** Charmed Airflow runs on any
   `CNCF-certified Kubernetes`_ distribution, whether on public cloud, private
   cloud, self-hosted infrastructure, or a local development cluster.
-* **Ingress layer.** `Traefik`_ (``traefik-k8s``) terminates and routes
-  external traffic to the Airflow web UI and REST API.
+* **Ingress layer.** `Traefik`_ (``traefik-k8s``) routes external traffic
+  to the Airflow web UI and REST API and handles TLS termination (at ingress).
 * **Database layer.** `PostgreSQL`_ (``postgresql-k8s``) provides the
   persistent metadata store that Airflow uses to track DAGs, task instances,
   and run history.
@@ -52,7 +52,7 @@ metadata database.
   runs, and task metadata.
 * **Airflow Scheduler** (``airflow-scheduler-k8s``) – monitors DAGs and task
   instances, resolves their dependencies, and triggers task execution.
-* **Airflow DAG Processor** (``airflow-dag-processor-k8s``) – continuously
+* **Airflow DAG Processor** (``airflow-dag-processor-k8s``) – periodically
   scans the configured DAG folder and parses Python files to discover and
   update DAG definitions.
 * **Airflow Triggerer** (``airflow-triggerer-k8s``) – runs the asynchronous
@@ -94,7 +94,7 @@ DAG distribution without baking DAGs into container images.
 Integrations
 ------------
 
-Charmed Airflow components communicate through `Juju integrations`_, The diagram below
+Charmed Airflow components communicate through `Juju integrations`_. The diagram below
 shows the integrations that connect the components of a Charmed Airflow deployment.
 
 .. figure:: ../images/integrations.png
