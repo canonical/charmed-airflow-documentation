@@ -2,7 +2,7 @@ Charmed Airflow DAG Processor
 =============================
 
 ``airflow-dag-processor-k8s`` is a Kubernetes charm for the Apache Airflow standalone DAG
-processor component. In Airflow's default architecture the scheduler is responsible for both
+processor component. In a typical Airflow deployment, the scheduler is responsible for both
 parsing DAG files and scheduling tasks. The standalone DAG processor separates these concerns:
 it takes over responsibility for parsing and serialising DAG files into the metadata database,
 allowing the scheduler to focus exclusively on scheduling.
@@ -27,10 +27,6 @@ Project and community
 Charmed Airflow is a member of the Ubuntu family. It is an open source project that warmly
 welcomes community contributions, suggestions, fixes, and constructive feedback.
 
-* `Code of conduct`_
-* `Join the Discourse community forum`_
-* `Contribute on GitHub`_
-
-.. _Code of conduct: https://ubuntu.com/community/code-of-conduct
-.. _Join the Discourse community forum: https://discourse.charmhub.io
-.. _Contribute on GitHub: https://github.com/canonical/airflow-core-operators
+* `Code of conduct <https://ubuntu.com/community/code-of-conduct>`_
+* `Join the Discourse community forum <https://discourse.charmhub.io>`_
+* `Contribute on GitHub <https://github.com/canonical/airflow-core-operators>`_
