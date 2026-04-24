@@ -10,7 +10,6 @@
 .. _Diátaxis: https://diataxis.fr/
 .. _Git Integrator: https://charmhub.io/git-integrator
 .. _Juju user secret: https://documentation.ubuntu.com/juju/en/latest/reference/secret/
-.. _S3 Integrator: https://charmhub.io/s3-integrator
 .. _Ingress: https://charmhub.io/traefik-k8s/libraries/ingress
 .. _Juju: https://juju.is/
 .. _Juju Terraform Provider: https://registry.terraform.io/providers/juju/juju/latest/docs

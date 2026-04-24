@@ -11,7 +11,7 @@ Prerequisites
 -------------
 
 A running Charmed Airflow deployment. If you haven't deployed it yet, follow
-the :doc:`tutorial </tutorial>` first.
+the :doc:`tutorial </tutorial/index>` first.
 
 Deploy the Git Integrator charm
 --------------------------------
