@@ -7,4 +7,5 @@ Integrate
 
    traefik
    git-integrator
+   s3-integrator
    kubernetes-executor
