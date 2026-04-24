@@ -27,6 +27,6 @@ Project and community
 Charmed Airflow is a member of the Ubuntu family. It is an open source project that warmly
 welcomes community contributions, suggestions, fixes, and constructive feedback.
 
-* `Code of conduct <https://ubuntu.com/community/code-of-conduct>`_
-* `Join the Discourse community forum <https://discourse.charmhub.io>`_
-* `Contribute on GitHub <https://github.com/canonical/airflow-core-operators>`_
+* `Code of conduct`_
+* `Join the Discourse community forum`_
+* `Contribute on GitHub`_
