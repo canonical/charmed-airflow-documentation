@@ -1,12 +1,28 @@
+.. _Airflow Kubernetes Executor documentation: https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/kubernetes_executor.html#pod-override
+.. _Airflow Kubernetes executor charm configuration page: https://charmhub.io/airflow-kubernetes-executor-k8s/configurations
+.. _Airflow REST API: https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html
 .. _Apache Airflow: https://airflow.apache.org/
 .. _Apache Airflow documentation: https://airflow.apache.org/docs/
+.. _Canonical K8s load balancer: https://documentation.ubuntu.com/canonical-kubernetes/latest/snap/howto/networking/default-loadbalancer
 .. _Canonical Sphinx: https://github.com/canonical/canonical-sphinx
 .. _Charmed Airflow: https://github.com/canonical/charmed-airflow-documentation
 .. _Charmed Airflow on GitHub: https://github.com/canonical/charmed-airflow-documentation
+.. _Charmed Airflow Solutions: https://github.com/canonical/charmed-airflow-solutions/tree/track/3.1/modules/charmed-airflow/README.md
+.. _Code of conduct: https://ubuntu.com/community/code-of-conduct
+.. _Contribute on GitHub: https://github.com/canonical/airflow-core-operators
 .. _Diátaxis: https://diataxis.fr/
+.. _Ingress: https://charmhub.io/traefik-k8s/libraries/ingress
+.. _Join the Discourse community forum: https://discourse.charmhub.io
 .. _Juju: https://juju.is/
+.. _Juju Terraform Provider: https://registry.terraform.io/providers/juju/juju/latest/docs
+.. _Kubernetes charm: https://documentation.ubuntu.com/juju/3.6/explanation/charms-vs-kubernetes-operators/
 .. _Terraform: https://www.terraform.io/
+.. _Terraform CLI: https://developer.hashicorp.com/terraform/install
 .. _Traefik: https://traefik.io/
+.. _Traefik documentation: https://doc.traefik.io/traefik/
+.. _Traefik K8s: https://charmhub.io/traefik-k8s
+.. _Traefik K8s | Configurations: https://charmhub.io/traefik-k8s/configurations
+.. _Security with X.509 TLS certificates: https://charmhub.io/topics/security-with-x-509-certificates
 .. _Sphinx DataTables: https://sharm294.github.io/sphinx-datatables/
 .. _Sphinx design: https://sphinx-design.readthedocs.io/en/latest/
 .. _Sphinx documentation starter pack:
