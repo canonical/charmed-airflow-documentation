@@ -83,14 +83,11 @@ retrigger(ing)?
 Diátaxis
 MinIO
 S3
-s3
 nip
 RBAC
 Subdomain
-subdomain
 TLS
 Termination
-traefik
 Traefik
 preconfigured
 venv
