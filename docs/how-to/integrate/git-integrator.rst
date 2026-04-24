@@ -16,6 +16,9 @@ the :doc:`tutorial </tutorial/index>` first.
 Deploy the Git Integrator charm
 --------------------------------
 
+You can deploy multiple instances of the ``git-integrator`` charm, one per
+repository, and integrate each with Charmed Airflow independently.
+
 .. code-block:: bash
 
    juju deploy git-integrator --channel 1.0/stable
