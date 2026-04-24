@@ -23,30 +23,8 @@ Deploy the S3 Integrator charm
 Configure the charm
 --------------------
 
-Set the bucket and, for non-AWS endpoints, the S3 service URL:
-
-.. code-block:: bash
-
-   juju config s3-integrator \
-     bucket=my-dags-bucket \
-     path=/dags
-
-For a non-AWS S3-compatible service (for example, MinIO), also set the
-endpoint and region:
-
-.. code-block:: bash
-
-   juju config s3-integrator \
-     endpoint=https://minio.example.com:9000 \
-     region=us-east-1
-
-Set credentials via the ``sync-s3-credentials`` action:
-
-.. code-block:: bash
-
-   juju run s3-integrator/leader sync-s3-credentials \
-     access-key=<access-key> \
-     secret-key=<secret-key>
+For full configuration options, including bucket setup, credentials, and
+non-AWS endpoints, see the `S3 Integrator`_ documentation on Charmhub.
 
 Integrate with Charmed Airflow
 -------------------------------
