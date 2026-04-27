@@ -11,14 +11,17 @@ Prerequisites
 -------------
 
 A running Charmed Airflow deployment. If you haven't deployed it yet, follow
-the :doc:`tutorial </tutorial/index>` first.
+the :doc:`tutorial <../../tutorial>` first.
 
 Deploy the S3 Integrator charm
 -------------------------------
 
 .. code-block:: bash
 
-   juju deploy s3-integrator --channel 1/stable
+   juju deploy s3-integrator
+
+.. note::
+   For detailed information on available channels, tracks, and the latest stable releases, please refer to the`S3 Integrator`_ documentation on Charmhub.
 
 Configure the charm
 --------------------
