@@ -15,7 +15,7 @@ In this documentation
 .. grid:: 1 1 2 2
 
     .. grid-item-card:: Tutorial
-        :link: /tutorial/index
+        :link: tutorial
         :link-type: doc
 
         **Get started** - hands-on introduction to Charmed Airflow for new users.
@@ -55,7 +55,7 @@ contributions, suggestions, fixes, and constructive feedback.
     :hidden:
     :maxdepth: 2
 
-    Tutorial <tutorial/index>
+    Tutorial <tutorial>
     How-to guides <how-to/index>
     Reference <reference/index>
     Explanation <explanation/index>
