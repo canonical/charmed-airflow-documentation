@@ -12,7 +12,7 @@ Prerequisites
 -------------
 
 * A Juju controller (v3.1+) bootstrapped on a Kubernetes cluster.
-  See the :doc:`tutorial </tutorial/index>` for setup instructions.
+  See the :doc:`tutorial <../../tutorial>` for setup instructions.
 * `Terraform CLI`_ (v1.12+).
 
 
