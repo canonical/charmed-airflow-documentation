@@ -5,6 +5,7 @@
 .. _Apache Airflow documentation: https://airflow.apache.org/docs/
 .. _Canonical K8s load balancer: https://documentation.ubuntu.com/canonical-kubernetes/latest/snap/howto/networking/default-loadbalancer
 .. _Canonical Sphinx: https://github.com/canonical/canonical-sphinx
+.. _Charm Store: https://charmhub.io
 .. _Charmed Airflow: https://github.com/canonical/charmed-airflow-documentation
 .. _Charmed Airflow on GitHub: https://github.com/canonical/charmed-airflow-documentation
 .. _Charmed Airflow Solutions: https://github.com/canonical/charmed-airflow-solutions/tree/track/3.1/modules/charmed-airflow/README.md
@@ -21,6 +22,7 @@
 .. _Terraform: https://www.terraform.io/
 .. _Terraform CLI: https://developer.hashicorp.com/terraform/install
 .. _Traefik: https://traefik.io/
+.. _Set up your juju deployment: https://documentation.ubuntu.com/juju/3.6/howto/manage-your-juju-deployment/set-up-your-juju-deployment-local-testing-and-development/
 .. _Traefik documentation: https://doc.traefik.io/traefik/
 .. _Traefik K8s: https://charmhub.io/traefik-k8s
 .. _Traefik K8s | Configurations: https://charmhub.io/traefik-k8s/configurations
