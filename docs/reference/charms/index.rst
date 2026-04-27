@@ -10,3 +10,4 @@ Charms
    airflow-scheduler
    airflow-triggerer
    airflow-coordinator
+   airflow-kubernetes-executor
