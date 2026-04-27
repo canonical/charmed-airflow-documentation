@@ -6,6 +6,7 @@ Charmcraft
 cjk
 cryptographically
 dvipng
+fernet
 fonts
 freefont
 github
@@ -25,6 +26,7 @@ Multipass
 otf
 plantuml
 PNG
+pooler
 Pygments
 pymarkdown
 QEMU
@@ -49,6 +51,7 @@ uncomment(ing)?
 utils
 uv
 VMs
+VM's
 WCAG
 whitespace
 whitespaces
@@ -81,6 +84,26 @@ Makefile
 rediraffe
 retrigger(ing)?
 Diátaxis
+Airflow
+airflow
+API
+cfg
+CIDR
+CLI
+DAG
+DAGs
+Fernet
+HCL
+Jinja2
+JSON
+Juju
+kubectl
+MicroK8s
+PgBouncer
+PostgreSQL
+subprocesses
+tfvars
+UI
 nip
 RBAC
 Subdomain
@@ -95,3 +118,4 @@ venv
 rtd
 triggerer
 asyncio
+scheduler's
