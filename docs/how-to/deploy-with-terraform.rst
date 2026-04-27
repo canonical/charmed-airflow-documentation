@@ -17,7 +17,7 @@ Prerequisites
 
 
 Clone the Charmed Airflow Solutions repository
-------------------------------
+----------------------------------------------
 
 Clone the ``charmed-airflow-solutions`` repository that contains the Terraform
 module:
@@ -139,7 +139,7 @@ Access the Airflow UI
 ---------------------
 
 After deployment completes, access the web UI using any of the methods
-described in the :doc:`tutorial </tutorial/index>`.
+described in the :doc:`tutorial <../../tutorial>`.
 
 Tear down
 ---------
