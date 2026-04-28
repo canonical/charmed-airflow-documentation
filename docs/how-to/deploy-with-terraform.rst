@@ -12,7 +12,7 @@ Prerequisites
 -------------
 
 * A Juju controller (v3.1+) bootstrapped on a Kubernetes cluster.
-  See the :doc:`tutorial <../../tutorial>` for setup instructions.
+  See the :doc:`tutorial </tutorial>` for setup instructions.
 * `Terraform CLI`_ (v1.12+).
 
 
@@ -139,7 +139,7 @@ Access the Airflow UI
 ---------------------
 
 After deployment completes, access the web UI using any of the methods
-described in the :doc:`tutorial <../../tutorial>`.
+described in the :doc:`tutorial </tutorial>`.
 
 Tear down
 ---------

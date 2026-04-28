@@ -16,7 +16,7 @@ Prerequisites
 -------------
 
 * A running Charmed Airflow deployment. If you haven't deployed it yet, follow
-  the :doc:`tutorial <../../tutorial>` or :doc:`Deploy with Terraform </how-to/deploy-with-terraform>` first.
+  the :doc:`tutorial </tutorial>` or :doc:`Deploy with Terraform </how-to/deploy-with-terraform>` first.
 
 * A Kubernetes cluster with a load balancer configured. Refer to your kubernetes distribution's documentation to enable
   load balancer support (for example, the `Canonical K8s load balancer`_).

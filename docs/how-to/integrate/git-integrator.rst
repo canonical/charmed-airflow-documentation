@@ -3,21 +3,18 @@
 Integrate with Git Integrator
 ==============================
 
-`Git Integrator`_ is a Juju charm for sharing Git repository connection details
-with consumer charms, enabling Charmed Airflow to load DAGs directly from a Git
-repository.
+`Git Integrator`_ is a Juju charm is designed to manage and share Git repository details and credentials with consumer charms. By integrating Git Integrator to Charmed Airflow, you provide the connection details necessary to define a Git DAG bundle, enabling Airflow to automatically load and sync DAGs directly from you remote repository.
+
 
 Prerequisites
 -------------
 
-A running Charmed Airflow deployment. If you haven't deployed it yet, follow
-the :doc:`tutorial <../../tutorial>` first.
+A running Charmed Airflow deployment. If you haven't deployed it yet, follow the :doc:`tutorial </tutorial>` first.
 
 Deploy the Git Integrator charm
 --------------------------------
 
-You can deploy multiple instances of the ``git-integrator`` charm, one per
-repository, and integrate each with Charmed Airflow independently.
+You can deploy multiple instances of the ``git-integrator`` charm, one per repository, and integrate each with Charmed Airflow independently.
 
 .. code-block:: bash
 
@@ -26,9 +23,7 @@ repository, and integrate each with Charmed Airflow independently.
 Configure the charm
 --------------------
 
-For full configuration options, including public and private repository
-authentication (HTTPS credentials and SSH), see the `Git Integrator`_
-documentation on Charmhub.
+For full configuration options, including public and private repository authentication (HTTPS credentials and SSH), see the `Git Integrator`_ documentation on Charmhub.
 
 Integrate with Charmed Airflow
 -------------------------------
