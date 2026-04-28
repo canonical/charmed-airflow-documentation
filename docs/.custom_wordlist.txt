@@ -118,4 +118,6 @@ venv
 rtd
 Triggerer
 proxied
+triggerer
+asyncio
 scheduler's
