@@ -17,7 +17,7 @@ Prerequisites
 
 
 Clone the Charmed Airflow Solutions repository
-------------------------------
+----------------------------------------------
 
 Clone the ``charmed-airflow-solutions`` repository that contains the Terraform
 module:
