@@ -3,15 +3,13 @@
 Integrate with S3 Integrator
 ==============================
 
-`S3 Integrator`_ is a Juju charm for supplying S3 storage credentials to
-consumer charms. Integrating it with Charmed Airflow allows your deployment to
-load DAGs from an S3-compatible bucket.
+`S3 Integrator`_ is a Juju charm used to manage and provide S3-compatible storage credentials to other applications. By relating S3 integrator to Charmed Airflow, you securely share the access details required to define an S3 DAG bundle, allowing your deployment to load and sync DAGs directly from an S3 bucket.
 
 Prerequisites
 -------------
 
 A running Charmed Airflow deployment. If you haven't deployed it yet, follow
-the :doc:`tutorial <../../tutorial>` first.
+the :doc:`tutorial </tutorial>` first.
 
 Deploy the S3 Integrator charm
 -------------------------------
@@ -21,7 +19,7 @@ Deploy the S3 Integrator charm
    juju deploy s3-integrator
 
 .. note::
-   For detailed information on available channels, tracks, and the latest stable releases, please refer to the`S3 Integrator`_ documentation on Charmhub.
+   For detailed information on available channels, tracks, and the latest stable releases, please refer to the `S3 Integrator`_ documentation on Charmhub.
 
 Configure the charm
 --------------------
