@@ -6,6 +6,7 @@
 .. _Canonical K8s load balancer: https://documentation.ubuntu.com/canonical-kubernetes/latest/snap/howto/networking/default-loadbalancer
 .. _Canonical Sphinx: https://github.com/canonical/canonical-sphinx
 .. _Charm Store: https://charmhub.io
+.. _CNCF-certified Kubernetes: https://www.cncf.io/training/certification/software-conformance/
 .. _Charmed Airflow: https://github.com/canonical/charmed-airflow-documentation
 .. _Charmed Airflow on GitHub: https://github.com/canonical/charmed-airflow-documentation
 .. _Charmed Airflow Solutions: https://github.com/canonical/charmed-airflow-solutions/tree/track/3.1/modules/charmed-airflow/README.md
@@ -17,8 +18,10 @@
 .. _Ingress: https://charmhub.io/traefik-k8s/libraries/ingress
 .. _Join the Discourse community forum: https://discourse.charmhub.io
 .. _Juju: https://juju.is/
+.. _Juju integrations: https://documentation.ubuntu.com/juju/3.6/reference/relation/
 .. _Juju Terraform Provider: https://registry.terraform.io/providers/juju/juju/latest/docs
 .. _Kubernetes charm: https://documentation.ubuntu.com/juju/3.6/explanation/charms-vs-kubernetes-operators/
+.. _PostgreSQL: https://charmhub.io/postgresql-k8s
 .. _Terraform: https://www.terraform.io/
 .. _Terraform CLI: https://developer.hashicorp.com/terraform/install
 .. _Traefik: https://traefik.io/
