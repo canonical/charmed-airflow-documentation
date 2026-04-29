@@ -65,19 +65,19 @@ Support charms
 .. _coordinator-charm:
 
 * **Airflow Coordinator** (``airflow-coordinator-k8s``) is the central support
-charm. It gathers configuration from every source in the deployment — user
-configuration, defaults, database credentials, executor settings, and DAG
-source integrators — merges it into a single consistent Airflow
-configuration, and shares it with each core charm. As a result, the core
-charms never need to consume those relations directly.
+  charm. It gathers configuration from every source in the deployment — user
+  configuration, defaults, database credentials, executor settings, and DAG
+  source integrators — merges it into a single consistent Airflow
+  configuration, and shares it with each core charm. As a result, the core
+  charms never need to consume those relations directly.
 
 * **Airflow Executor charms** configure how Airflow schedules and runs DAG
-tasks. Each executor charm advertises an executor-specific configuration
-(such as a Pod template) to the coordinator, which forwards it to the core
-charms. A deployment can use different executor charms depending on the
-isolation, scaling, and resource requirements of its workloads. For example,
-the :doc:`Airflow Kubernetes Executor </how-to/integrate/kubernetes-executor>`
-runs each task as an isolated Kubernetes Pod.
+  tasks. Each executor charm advertises an executor-specific configuration
+  (such as a Pod template) to the coordinator, which forwards it to the core
+  charms. A deployment can use different executor charms depending on the
+  isolation, scaling, and resource requirements of its workloads. For example,
+  the :doc:`Airflow Kubernetes Executor </how-to/integrate/kubernetes-executor>`
+  runs each task as an isolated Kubernetes Pod.
 
 External integrators
 ~~~~~~~~~~~~~~~~~~~~
