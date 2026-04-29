@@ -116,8 +116,6 @@ active state:
 * ``postgresql_client`` – used by the coordinator to obtain credentials for
   the PostgreSQL metadata database, which are then propagated to the core
   charms.
-* ``ingress`` – used by the API server to obtain a proxied, externally
-  reachable endpoint from ``traefik-k8s``.
 
 Optional integrations
 ~~~~~~~~~~~~~~~~~~~~~
@@ -129,6 +127,8 @@ The following integrations enable optional capabilities.
   template applied when tasks are scheduled as Kubernetes Pods.
 * ``git`` – used by the coordinator to collect the connection information
   required to fetch DAGs from a Git repository, through the Git integrator.
+* ``ingress`` – used by the API server to obtain a proxied, externally
+  reachable endpoint from ``traefik-k8s``.
 * ``s3`` – used by the coordinator to collect the connection information
   required to fetch DAGs from an S3-compatible bucket, through the S3
   integrator.
