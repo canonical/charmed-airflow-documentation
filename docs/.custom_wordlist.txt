@@ -84,6 +84,8 @@ Makefile
 rediraffe
 retrigger(ing)?
 Diátaxis
+MinIO
+S3
 Airflow
 airflow
 API
@@ -107,11 +109,8 @@ UI
 nip
 RBAC
 Subdomain
-subdomain
 TLS
 Termination
-termination
-traefik
 Traefik
 preconfigured
 venv
