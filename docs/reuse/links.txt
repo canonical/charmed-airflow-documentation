@@ -24,6 +24,7 @@
 .. _Traefik documentation: https://doc.traefik.io/traefik/
 .. _Traefik K8s: https://charmhub.io/traefik-k8s
 .. _Traefik K8s | Configurations: https://charmhub.io/traefik-k8s/configurations
+.. _S3 Integrator: https://charmhub.io/s3-integrator
 .. _Security with X.509 TLS certificates: https://charmhub.io/topics/security-with-x-509-certificates
 .. _Sphinx DataTables: https://sharm294.github.io/sphinx-datatables/
 .. _Sphinx design: https://sphinx-design.readthedocs.io/en/latest/
