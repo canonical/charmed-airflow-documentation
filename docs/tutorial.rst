@@ -62,6 +62,33 @@ The Airflow Coordinator is the central configuration hub. It generates and distr
 
    juju deploy airflow-coordinator-k8s
 
+Configure the Fernet key
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Airflow uses a `Fernet key`_ to encrypt sensitive data (such as connection
+passwords and variables) in its metadata database. The Airflow Coordinator charm
+requires this key to be provided as a Juju secret.
+
+Generate a Fernet key and store it as a Juju secret:
+
+.. code-block:: bash
+
+   juju add-secret fernet-key-secret \
+     fernet-key="$(python3 -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())')"
+
+Grant the secret to the Airflow Coordinator charm and configure it:
+
+.. code-block:: bash
+
+   juju grant-secret fernet-key-secret airflow-coordinator-k8s
+   juju config airflow-coordinator-k8s \
+     fernet_key_secret=secret:<secret-id>
+
+.. note::
+
+   Replace ``<secret-id>`` with the secret ID returned by ``juju add-secret``.
+   You can find it with ``juju list-secrets``.
+
 Deploy the core Airflow components
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

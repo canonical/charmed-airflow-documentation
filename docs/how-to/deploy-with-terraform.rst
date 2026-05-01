@@ -33,15 +33,44 @@ Deploy with the Local Executor (default)
 The default deployment uses Airflow's **Local Executor**, where the Airflow Scheduler
 runs tasks in local subprocesses.
 
-Create a ``terraform.tfvars`` file:
+Before deploying, generate a `Fernet key`_ and store it as a Juju secret.
+Airflow uses this key to encrypt sensitive data in its metadata database.
+
+.. code-block:: bash
+
+   juju add-secret fernet-key-secret \
+     fernet-key="$(python3 -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())')"
+
+.. note::
+
+   Note the secret ID returned by ``juju add-secret``. You can also find it
+   with ``juju list-secrets``.
+
+Create a ``terraform.tfvars`` file, passing the Fernet key secret via the
+coordinator's config:
 
 .. code-block:: hcl
 
    model_uuid = "<your-model-uuid>"
 
+   airflow_coordinator = {
+     config = {
+       fernet_key_secret = "secret:<secret-id>"
+     }
+   }
+
    postgresql = {
      profile = "testing"
    }
+
+.. important::
+
+   You must also grant the secret to the coordinator application after
+   deployment:
+
+   .. code-block:: bash
+
+      juju grant-secret fernet-key-secret airflow-coordinator
 
 .. note::
 
@@ -73,6 +102,12 @@ Create a ``deploy_with_kubernetes_executor.tfvars`` file:
 .. code-block:: hcl
 
    model_uuid = "<your-model-uuid>"
+
+   airflow_coordinator = {
+     config = {
+       fernet_key_secret = "secret:<secret-id>"
+     }
+   }
 
    postgresql = {
      profile = "testing"
