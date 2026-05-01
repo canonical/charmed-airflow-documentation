@@ -62,6 +62,8 @@ The Airflow Coordinator is the central configuration hub. It generates and distr
 
    juju deploy airflow-coordinator-k8s
 
+.. _configure-the-fernet-key:
+
 Configure the Fernet key
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
