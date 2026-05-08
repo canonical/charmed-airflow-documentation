@@ -33,10 +33,12 @@ Deploy with the Local Executor (default)
 The default deployment uses Airflow's **Local Executor**, where the Airflow Scheduler
 runs tasks in local subprocesses.
 
-The Airflow Coordinator requires a Fernet key to encrypt sensitive data in the
-metadata database. Before deploying, generate the key and store it as a Juju
-secret. Include the secret URI in the ``airflow_coordinator.config`` block of
-your vars file, and grant the secret to the coordinator after deployment.
+Airflow uses a `Fernet key`_ to encrypt sensitive data (such as connection
+passwords and variables) in its metadata database. The Airflow Coordinator charm
+passes this key to Airflow and must be configured with it as a Juju secret.
+Generate the secret before running ``terraform apply``, include its URI in the
+``airflow_coordinator.config`` block of your vars file, and grant it to the
+``airflow-coordinator-k8s`` application.
 See :ref:`configure-the-fernet-key` in the tutorial for step-by-step
 instructions.
 

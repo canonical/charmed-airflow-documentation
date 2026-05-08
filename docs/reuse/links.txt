@@ -1,4 +1,4 @@
-.. _Airflow Kubernetes Executor documentation: https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/kubernetes_executor.html#pod-override
+.. _Airflow Kubernetes Executor documentation: https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/kubernetes.html#kubernetes-executor
 .. _Airflow Kubernetes executor charm configuration page: https://charmhub.io/airflow-kubernetes-executor-k8s/configurations
 .. _Airflow REST API: https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html
 .. _Apache Airflow: https://airflow.apache.org/
