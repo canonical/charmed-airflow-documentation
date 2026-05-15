@@ -1,4 +1,4 @@
-.. _Airflow Kubernetes Executor documentation: https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/kubernetes_executor.html#pod-override
+.. _Airflow Kubernetes Executor documentation: https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/kubernetes.html#kubernetes-executor
 .. _Airflow Kubernetes executor charm configuration page: https://charmhub.io/airflow-kubernetes-executor-k8s/configurations
 .. _Airflow REST API: https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html
 .. _Apache Airflow: https://airflow.apache.org/
@@ -6,6 +6,7 @@
 .. _Canonical K8s load balancer: https://documentation.ubuntu.com/canonical-kubernetes/latest/snap/howto/networking/default-loadbalancer
 .. _Canonical Sphinx: https://github.com/canonical/canonical-sphinx
 .. _Charm Store: https://charmhub.io
+.. _Fernet key: https://airflow.apache.org/docs/apache-airflow/stable/security/secrets/fernet.html
 .. _CNCF-certified Kubernetes: https://www.cncf.io/training/certification/software-conformance/
 .. _Charmed Airflow: https://github.com/canonical/charmed-airflow-documentation
 .. _Charmed Airflow on GitHub: https://github.com/canonical/charmed-airflow-documentation
