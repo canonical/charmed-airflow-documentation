@@ -90,6 +90,8 @@ DAG distribution without baking DAGs into container images.
   and credentials for a remote Git repository containing DAGs.
 * **S3 integrator** (``s3-integrator``) – provides the connection details and
   credentials for an S3-compatible object storage bucket containing DAGs.
+* **Ory Hydra** (``hydra``) – Provides the OAuth configurations required to enable
+  IAM integration.
 
 Integrations
 ------------
@@ -132,3 +134,5 @@ The following integrations enable optional capabilities.
 * ``s3`` – used by the coordinator to collect the connection information
   required to fetch DAGs from an S3-compatible bucket, through the S3
   integrator.
+* ``oauth`` – Used by the coordinator to retrieve OAuth configurations from the
+  Canonical Identity Platform to enable IAM integration.

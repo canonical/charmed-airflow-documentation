@@ -23,6 +23,8 @@ lang
 LaTeX
 latexmk
 Multipass
+OAuth
+Ory
 otf
 plantuml
 PNG
