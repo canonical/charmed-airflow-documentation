@@ -24,7 +24,12 @@ Add the required integration between the ``hydra`` and ``airflow-coordinator-k8s
 .. code-block:: bash
     juju switch airflow
     juju consume <hydra_offer_url> hydra
-    juju integrate hydra:oauth airflow-coordinator-k8s:ouath
+    juju integrate hydra:oauth airflow-coordinator-k8s:oauth
+
+.. note::
+    You can find the ``<hydra_offer_url>`` in either:
+    - The output of terraform apply
+    - The output of ``juju offers --model iam``
 
 This integration will enable authentication with the identity providers in the deployed Canonical Identity Platform.
 
@@ -43,7 +48,7 @@ Configure any of the following options to map identity provider groups to their 
     juju config airflow-coordinator-k8s idp_groups_for_admin="managers,product_managers"
     juju config airflow-coordinator-k8s idp_groups_for_user="data_engineers"
 
-Additionally, configure ``enable_user_registration`` to toggle user self registration within Airflow:
+Additionally, set ``enable_user_registration`` to toggle user self-registration within Airflow (assigning them the ``Public`` role by default).
 
 .. code-block:: bash
     juju config airflow-coordinator-k8s enable_user_registration=true
