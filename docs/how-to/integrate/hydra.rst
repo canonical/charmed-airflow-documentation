@@ -1,7 +1,9 @@
+.. _integrate-hydra:
+
 Integrate with the Canonical Identity Platform
 =============================================================
 
-The `Canonical Identity Platform`__ is a charmed solution designed to integrate with external Identity and Access Management (IAM) systems, while also offering the option for a fully built-in IAM deployment. Within the platform, `Hydra`__ acts as the OpenID Connect (OIDC) server, providing an ``oauth`` relation interface.
+The `Canonical Identity Platform`_ is a charmed solution designed to integrate with external Identity and Access Management (IAM) systems, while also offering the option for a fully built-in IAM deployment. Within the platform, `Hydra`_ acts as the OpenID Connect (OIDC) server, providing an ``oauth`` relation interface.
 
 The Canonical Identity Platform can either serve as an identity broker to federate external identity providers, or support native identity management via Ory Kratos.
 
@@ -14,7 +16,7 @@ the :doc:`tutorial </tutorial>` first.
 Deploy the Canonical Identity Platform
 ---------------------------------------
 
-Deploy the Canonical Identity Platform and configure your preferred identity provider. For detailed instructions on both supported integration methods, refer to the ``Set up the identity provider`` section of the `Canonical Identity Platform tutorial`__.
+Deploy the Canonical Identity Platform and configure your preferred identity provider. For detailed instructions on both supported integration methods, refer to the ``Set up the identity provider`` section of the `Canonical Identity Platform tutorial`_.
 
 Integrate with Airflow Coordinator
 -------------------------------------
