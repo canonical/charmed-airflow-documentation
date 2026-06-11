@@ -3,6 +3,8 @@
 .. _Airflow REST API: https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html
 .. _Apache Airflow: https://airflow.apache.org/
 .. _Apache Airflow documentation: https://airflow.apache.org/docs/
+.. _Canonical Identity Platform: https://canonical-identity.readthedocs-hosted.com/
+.. _Canonical Identity Platform tutorial: https://canonical-identity.readthedocs-hosted.com/tutorial/canonical-identity-platform/
 .. _Canonical K8s load balancer: https://documentation.ubuntu.com/canonical-kubernetes/latest/snap/howto/networking/default-loadbalancer
 .. _Canonical Sphinx: https://github.com/canonical/canonical-sphinx
 .. _Charm Store: https://charmhub.io
@@ -15,6 +17,7 @@
 .. _Contribute on GitHub: https://github.com/canonical/airflow-core-operators
 .. _Diátaxis: https://diataxis.fr/
 .. _Git Integrator: https://charmhub.io/git-integrator
+.. _Hydra: https://charmhub.io/hydra
 .. _Juju user secret: https://documentation.ubuntu.com/juju/en/latest/reference/secret/
 .. _Ingress: https://charmhub.io/traefik-k8s/libraries/ingress
 .. _Join the Discourse community forum: https://discourse.charmhub.io

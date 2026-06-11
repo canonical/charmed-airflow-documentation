@@ -10,7 +10,7 @@ See [its documentation](https://canonical-starter-pack.readthedocs-hosted.com/la
 
 ### Build it
 
-Run the following command within the `docs` folder to build the documentation locally: 
+Run the following command within the `docs` folder to build the documentation locally:
 
 ```
    make run
@@ -20,19 +20,19 @@ Run the following command within the `docs` folder to build the documentation lo
 
 Run various checks locally with the following commands.
 
-Check links: 
+Check links:
 
 ```
    make linkcheck
 ```
 
-Check spelling: 
+Check spelling:
 
 ```
    make spelling
 ```
 
-Check inclusive language: 
+Check inclusive language:
 
 ```
    make woke
