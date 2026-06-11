@@ -7,5 +7,6 @@ Integrate
 
    traefik
    git-integrator
+   hydra
    s3-integrator
    kubernetes-executor

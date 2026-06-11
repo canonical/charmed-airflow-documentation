@@ -1,3 +1,5 @@
+.. _integrate-kubernetes-executor:
+
 Integrate with the Charmed Airflow Kubernetes Executor
 =============================================================
 
