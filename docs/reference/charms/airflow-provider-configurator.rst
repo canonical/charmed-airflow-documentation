@@ -21,12 +21,14 @@ Core responsibilities
   user secret, keeping it out of the Git repository.
 * Combining the two sources and sharing the resulting provider configuration with
   ``airflow-coordinator-k8s`` for merging into ``airflow.cfg``.
-* Dropping any provider configuration that providers are never allowed to set, such as
-  settings belonging to Airflow's core machinery. This check is applied to both the
-  ``.ini`` file and the Juju user secret. Dropped settings are reported in the unit
-  status message and logged, and do not block the unit. The coordinator applies a
-  further check of its own, dropping provider configuration that collides with the
-  configuration it already manages.
+* Dropping any provider configuration that belongs to a reserved section, that is, one
+  that providers are never allowed to set: ``api``, ``api_auth``, ``core``,
+  ``dag_processor``, ``database``, ``default``, ``fab.auth_backends``,
+  ``kubernetes_executor``, and ``webserver``. This check is applied to both the ``.ini``
+  file and the Juju user secret. Dropped settings are reported in the unit status
+  message and logged, and do not block the unit. The coordinator applies a further check
+  of its own, dropping provider configuration that collides with the configuration it
+  already manages.
 
 Only one ``airflow-provider-configurator`` application is supported per Charmed Airflow
 deployment, and it accepts a single Git integrator application.

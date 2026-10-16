@@ -27,7 +27,7 @@ Deploy the Provider Configurator charm:
 
 .. code-block:: bash
 
-   juju deploy airflow-provider-configurator
+   juju deploy airflow-provider-configurator --channel 1.0/edge
 
 .. note::
 
@@ -42,7 +42,7 @@ configuration options:
 
 .. code-block:: bash
 
-   juju deploy git-integrator provider-config-git --channel 1.0/stable
+   juju deploy git-integrator provider-config-git --channel 1.0/edge
 
 ----
 
@@ -99,12 +99,13 @@ it:
    juju grant-secret airflow-provider-secret airflow-provider-configurator
 
    juju config airflow-provider-configurator \
-     airflow_provider_configurations_secret=secret:<secret-id>
+     airflow_provider_configurations_secret=<secret-uri>
 
 .. note::
 
-   Replace ``<secret-id>`` with the secret ID returned by ``juju add-secret``. You can
-   find it again with ``juju list-secrets``. The secret key is hyphenated
+   Replace ``<secret-uri>`` with the secret URI returned by ``juju add-secret``. It
+   already includes the ``secret:`` prefix, so do not add one. You can find it again
+   with ``juju list-secrets``. The secret key is hyphenated
    (``airflow-provider-configurations``) because Juju does not allow underscores in
    secret keys.
 
@@ -162,10 +163,11 @@ Once the charm is ``active``, inspect its logs to confirm what was published:
 .. note::
 
    Some provider configuration is dropped rather than applied, without blocking the
-   deployment: settings that providers are never allowed to set, such as those
-   belonging to Airflow's core machinery, and settings the coordinator already manages
-   itself. The unit that drops a setting reports this in its status message and names
-   each dropped setting in its logs.
+   deployment: settings in sections that providers are never allowed to set, such as
+   ``core``, ``database``, and ``webserver``, and settings the coordinator already
+   manages itself. The unit that drops a setting names each dropped setting in its
+   status message. For the full list of reserved sections, see
+   the :doc:`charm reference </reference/charms/airflow-provider-configurator>`.
 
 ----
 
