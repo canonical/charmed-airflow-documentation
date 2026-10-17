@@ -66,10 +66,19 @@ Support charms
 
 * **Airflow Coordinator** (``airflow-coordinator-k8s``) is the central support
   charm. It gathers configuration from every source in the deployment — user
-  configuration, defaults, database credentials, executor settings, and DAG
-  source integrators — merges it into a single consistent Airflow
-  configuration, and shares it with each core charm. As a result, the core
-  charms never need to consume those relations directly.
+  configuration, defaults, database credentials, executor settings, DAG
+  source integrators, and provider configuration — merges it into a single
+  consistent Airflow configuration, and shares it with each core charm. As a
+  result, the core charms never need to consume those relations directly.
+
+* **Airflow Provider Configurator** (``airflow-provider-configurator``) lets
+  operators configure Airflow providers as data rather than through charm
+  configuration options. It reads non-sensitive provider configuration from an
+  ``.ini`` file in a Git repository and sensitive values from a Juju user
+  secret, then passes the combined result to the coordinator for merging. This
+  keeps the coordinator's own configuration surface from having to grow with
+  every provider. See
+  :doc:`Integrate with the Airflow Provider Configurator </how-to/integrate/provider-configurator>`.
 
 * **Airflow Executor charms** configure how Airflow schedules and runs DAG
   tasks. Each executor charm advertises an executor-specific configuration
@@ -83,11 +92,14 @@ External integrators
 ~~~~~~~~~~~~~~~~~~~~
 
 External integrators are optional charms that let Charmed Airflow fetch DAGs
-from sources outside the Kubernetes cluster. They allow operators to manage
-DAG distribution without baking DAGs into container images.
+and provider configuration from sources outside the Kubernetes cluster. They
+allow operators to manage DAG distribution and provider configuration without
+baking either into container images.
 
 * **Git integrator** (``git-integrator``) – provides the connection details
-  and credentials for a remote Git repository containing DAGs.
+  and credentials for a remote Git repository containing DAGs or provider
+  configuration. A deployment can run one integrator per repository, so DAGs
+  and provider configuration can live in separate repositories.
 * **S3 integrator** (``s3-integrator``) – provides the connection details and
   credentials for an S3-compatible object storage bucket containing DAGs.
 * **Ory Hydra** (``hydra``) – Provides the OAuth configurations required to enable
@@ -127,8 +139,13 @@ The following integrations enable optional capabilities.
 * ``airflow-kubernetes-executor-config`` – used by the coordinator to collect
   the configuration required by the Kubernetes executor, including the Pod
   template applied when tasks are scheduled as Kubernetes Pods.
+* ``airflow-provider-configuration`` – used by the coordinator to collect
+  provider configuration from the Provider Configurator, which it merges into
+  the shared Airflow configuration.
 * ``git`` – used by the coordinator to collect the connection information
-  required to fetch DAGs from a Git repository, through the Git integrator.
+  required to fetch DAGs from a Git repository, and by the Provider
+  Configurator to fetch its provider configuration file, through the Git
+  integrator.
 * ``ingress`` – used by the API server to obtain a proxied, externally
   reachable endpoint from ``traefik-k8s``.
 * ``s3`` – used by the coordinator to collect the connection information

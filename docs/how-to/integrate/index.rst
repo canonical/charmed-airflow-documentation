@@ -10,3 +10,4 @@ Integrate
    hydra
    s3-integrator
    kubernetes-executor
+   provider-configurator

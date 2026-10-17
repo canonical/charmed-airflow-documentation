@@ -11,3 +11,4 @@ Charms
    airflow-triggerer
    airflow-coordinator
    airflow-kubernetes-executor
+   airflow-provider-configurator

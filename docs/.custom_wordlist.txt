@@ -118,6 +118,7 @@ preconfigured
 venv
 rtd
 Triggerer
+configurator
 proxied
 triggerer
 asyncio
