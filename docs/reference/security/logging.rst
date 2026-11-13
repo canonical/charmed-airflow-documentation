@@ -31,7 +31,7 @@ Their app IDs are ``airflow.api-server``, ``airflow.scheduler``,
 ``airflow.dag-processor``, and ``airflow.triggerer``.
 
 * ``sys_startup:pebble`` (``WARN``): reconcile observes a stopped service become
-  running after Pebble replans.
+  running after Pebble applies the charm's service plan.
 * ``sys_shutdown:juju-charm`` (``WARN``): the charm successfully stops a running
   service because its coordinator relation is missing.
 * ``sys_restart:juju-charm`` (``WARN``): the charm successfully restarts a service
