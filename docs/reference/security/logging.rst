@@ -11,17 +11,28 @@ Each security event is a single-line JSON object with these fields:
 .. code-block:: json
 
    {
-     "datetime": "2026-11-13T16:04:45.317+00:00",
-     "appid": "airflow.api-server",
-     "event": "sys_restart:juju-charm",
-     "level": "WARN",
-     "actor": "juju-charm",
-     "target": "airflow",
-     "description": "Airflow api-server: Service restarted by the charm.",
-     "data": {"trigger": "configuration_changed"}
+     "owasp_event": {
+       "datetime": "2026-11-13T16:04:45.317+00:00",
+       "type": "security",
+       "appid": "airflow.api-server",
+       "event": "sys_restart:juju-charm",
+       "level": "WARN",
+       "actor": "juju-charm",
+       "target": "airflow",
+       "action": "restart",
+       "outcome": "success",
+       "component": "api-server",
+       "description": "Airflow api-server: Service restarted by the charm.",
+       "data": {"trigger": "configuration_changed"}
+     }
    }
 
-``datetime`` is UTC with an explicit offset. The ``appid`` identifies the product component. ``event`` contains the event type and any schema parameters; event-specific context is carried in ``data``. Secret values, API keys, JWT signing keys, OAuth client secrets, and bearer tokens are not logged.
+The logger emits the OWASP event under the ``owasp_event`` key in an OTLP-compatible
+JSON record. ``datetime`` is UTC with an explicit offset. ``appid`` identifies the
+product component, while ``event`` contains the event type and schema parameters.
+The core context fields include ``actor``, ``action``, ``target``, and ``outcome``;
+the ``data`` object carries supplementary product-specific context. Secret values,
+API keys, JWT signing keys, OAuth client secrets, and bearer tokens are never logged.
 
 Event inventory
 ---------------
@@ -47,10 +58,25 @@ revision changes. These events have ``actor: unattributed``; correlate them with
 Juju audit logs for human attribution. First reconciliation establishes an audit
 baseline and does not emit a change event.
 
-Not yet emitted
----------------
+Where remaining events belong
+------------------------------
 
-The charm hooks do not observe individual Airflow authentication or authorization decisions. ``authn_login_success``, ``authn_login_fail``, token issuance/revocation/reuse, and ``authz_fail`` require instrumentation in the Airflow authentication/authorization runtime or Hydra, where those decisions occur.
+Charm hooks do not observe individual user requests, so request-level events belong
+at the component that makes the authentication or authorization decision:
+
+* ``authn_login_success`` and ``authn_login_fail`` belong in the Airflow API/auth
+  manager for Airflow-validated credentials. If Hydra or another identity provider
+  performs the authentication, emit the event there instead.
+* Token creation, revocation, reuse, and deletion belong in Airflow or Hydra,
+  depending on which service issues, validates, or manages the token. The Airflow
+  ``secret-key`` and ``jwt-secret`` are signing keys, not access tokens; their
+  observed rotation is logged by the coordinator as ``authz_admin``.
+* ``authz_fail`` and administrative actions performed through the Airflow UI or API
+  belong in the Airflow authorization layer. The coordinator emits ``authz_admin``
+  for the configuration and credential changes it can observe during reconciliation.
+* Password changes and account lockouts belong in the identity provider when it
+  owns those controls. Airflow deployments that enable FAB OAuth user registration
+  should also audit user lifecycle events in Airflow or the identity provider.
 
 Event-category applicability
 ----------------------------
