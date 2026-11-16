@@ -78,7 +78,7 @@ inapplicable to the Airflow product.
      - ❌ Hydra owns OAuth token records; Airflow's API auth manager owns any Airflow-issued API JWT records.
    * - [AUTHZ]
      - Unauthorized Access Attempt
-     - ✅ Partial: Provider Configurator emits ``authz_fail`` for deduplicated Layer 2 denylist drops; Airflow request denials require runtime instrumentation.
+     - ❌ Not available: neither the Airflow charms nor Kratos implement account lockout.
    * - [AUTHZ]
      - Administrative Activity
      - ✅ Coordinator logs observed security-policy and credential-revision changes; Provider Configurator logs successfully published configuration changes. Airflow UI/API admin actions require runtime instrumentation.
@@ -112,11 +112,8 @@ Authentication-related events [AUTHN]
   individual login requests.
 * **Failed Login** (``authn_login_fail``): Kratos/Identity Platform emits this when
   credential validation fails. Airflow charms do not observe individual failures.
-* **Account Lockout** (``authn_login_lock``): lockout is not implemented by Airflow
-  charms, and Kratos support has not been confirmed. Identity Platform owns this
-  control; if it is supported and enabled, the Identity Platform should emit the
-  event. Confirm the deployment's lockout capability with that team before marking
-  the event not applicable to the overall product.
+* **Account Lockout** (``authn_login_lock``): **Not available** in the current
+  deployment; neither the Airflow charms nor Kratos implement account lockout.
 * **Password Changed** (``authn_password_change``): Kratos/Identity Platform emits
   this when a user password changes. Machine signing-key and client-secret rotations
   are logged instead as coordinator ``authz_admin`` actions, not as user password
