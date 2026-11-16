@@ -19,9 +19,6 @@ Each security event is a single-line JSON object with these fields:
        "level": "WARN",
        "actor": "juju-charm",
        "target": "airflow",
-       "action": "restart",
-       "outcome": "success",
-       "component": "api-server",
        "description": "Airflow api-server: Service restarted by the charm.",
        "data": {"trigger": "configuration_changed"}
      }
@@ -30,9 +27,11 @@ Each security event is a single-line JSON object with these fields:
 The logger emits the OWASP event under the ``owasp_event`` key in an OTLP-compatible
 JSON record. ``datetime`` is UTC with an explicit offset. ``appid`` identifies the
 product component, while ``event`` contains the event type and schema parameters.
-The core context fields include ``actor``, ``action``, ``target``, and ``outcome``;
-the ``data`` object carries supplementary product-specific context. Secret values,
-API keys, JWT signing keys, OAuth client secrets, and bearer tokens are never logged.
+``actor`` and ``target`` provide context, and ``data`` carries supplementary
+product-specific metadata. The action is encoded in the ``event`` identifier;
+severity is represented by ``level`` rather than a separate outcome field. Secret
+values, API keys, JWT signing keys, OAuth client secrets, and bearer tokens are
+never logged.
 
 Events to be logged
 -------------------
