@@ -78,22 +78,22 @@ inapplicable to the Airflow product.
      - ❌ Hydra owns OAuth token records; Airflow's API auth manager owns any Airflow-issued API JWT records.
    * - [AUTHZ]
      - Unauthorized Access Attempt
-     - ❌ Airflow's request authorization layer evaluates and denies access.
+     - ✅ Partial: Provider Configurator emits ``authz_fail`` for deduplicated Layer 2 denylist drops; Airflow request denials require runtime instrumentation.
    * - [AUTHZ]
      - Administrative Activity
-     - ✅ Partial: coordinator logs observed security-policy and credential-revision changes. Airflow UI/API admin actions require runtime instrumentation.
+     - ✅ Coordinator logs observed security-policy and credential-revision changes; Provider Configurator logs successfully published configuration changes. Airflow UI/API admin actions require runtime instrumentation.
    * - [SYS]
      - System Startup
-     - ✅ Workload charms observe Pebble stopped-to-running transitions.
+     - ✅ Core workload charms and Provider Configurator observe Pebble stopped-to-running transitions.
    * - [SYS]
      - System Shutdown
-     - ✅ Workload charms log successful charm-requested stops of running services.
+     - ✅ Core workload charms and Provider Configurator log successful charm-requested stops of running services.
    * - [SYS]
      - System Restart
-     - ✅ Workload charms log successful charm-requested restarts.
+     - ✅ Core workload charms and Provider Configurator log successful charm-requested restarts.
    * - [SYS]
      - System Crash
-     - ✅ Limited: logged when a failed Pebble operation is followed by Pebble `ERROR` status.
+     - ✅ Limited: logged for a failed Pebble operation followed by Pebble ``ERROR`` status.
    * - [SYS]
      - System Monitoring Disabled
      - ❌ Charms expose no operation that disables security monitoring.
@@ -141,20 +141,26 @@ Authorization-related events [AUTHZ]
 
 * **Unauthorized Access Attempt** (``authz_fail``): emitted by Airflow's
   authorization layer when an authenticated request is denied. Charm hooks do not
-  evaluate per-request roles or permissions, so this event is not currently emitted
-  by the charms.
+  evaluate per-request roles or permissions, so request-level ``authz_fail`` is not
+  currently emitted by Airflow charms. The Provider Configurator emits
+  ``authz_fail:unattributed,<config-key>`` when its Layer 2 denylist drops a
+  prohibited provider setting; repeated identical denied-key sets are deduplicated.
 * **Administrative Activity** (``authz_admin``): the coordinator emits this for
   observed security-policy changes and signing-key/client-secret revisions. Actions
   performed by an administrator through the Airflow UI or API must be emitted by
-  the Airflow runtime. Coordinator events use ``actor: unattributed`` and include
-  a pointer to Juju audit logs because the hook cannot identify the human initiator.
+  the Airflow runtime. The Provider Configurator emits this when changed provider
+  configuration is successfully published. Charm-side events use
+  ``actor: unattributed`` and point to Juju or repository audit logs because the
+  hook cannot identify the human initiator.
 
 System-level events [SYS]
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 These events are emitted by the API server, scheduler, DAG processor, and triggerer
 charms, with app IDs ``airflow.api-server``, ``airflow.scheduler``,
-``airflow.dag-processor``, and ``airflow.triggerer`` respectively.
+``airflow.dag-processor``, and ``airflow.triggerer`` respectively. The Provider
+Configurator emits lifecycle events for its Pebble-managed ``git-sync`` service
+with app ID ``airflow.provider-configurator``.
 
 * **System Startup** (``sys_startup``): emitted when reconcile observes a Pebble
   service transition from stopped to running after Pebble applies the charm's
