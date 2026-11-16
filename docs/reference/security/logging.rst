@@ -34,70 +34,155 @@ The core context fields include ``actor``, ``action``, ``target``, and ``outcome
 the ``data`` object carries supplementary product-specific context. Secret values,
 API keys, JWT signing keys, OAuth client secrets, and bearer tokens are never logged.
 
-Event inventory
----------------
+Events to be logged
+-------------------
 
-System events are emitted by the API server, scheduler, DAG processor, and triggerer charms.
-Their app IDs are ``airflow.api-server``, ``airflow.scheduler``,
-``airflow.dag-processor``, and ``airflow.triggerer``.
+Each event below names the component responsible for emitting it, or explains why
+it is not emitted by the charm-managed layer. Runtime-owned events must be
+instrumented in Airflow or the identity provider before they can be considered
+covered by this product.
 
-* ``sys_startup:pebble`` (``WARN``): reconcile observes a stopped service become
-  running after Pebble applies the charm's service plan.
-* ``sys_shutdown:juju-charm`` (``WARN``): the charm successfully stops a running
-  service because its coordinator relation is missing.
-* ``sys_restart:juju-charm`` (``WARN``): the charm successfully restarts a service
-  after configuration changes.
-* ``sys_crash:PebbleServiceError`` (``WARN``): a failed Pebble operation is
-  followed by Pebble reporting the service as ``ERROR``.
+The status column describes current **charm-layer** coverage. A red cross means
+the event is not emitted by a charm; it does not necessarily mean the event is
+inapplicable to the Airflow product.
 
-The coordinator app ID is ``airflow.coordinator``. After successful configuration
-publication, it emits ``authz_admin`` for changed IdP role mappings,
-user-registration policy, or OAuth activation. It also emits ``authz_admin`` actions
-``rotate_signing_key`` and ``update_client_secret`` when an existing Juju secret
-revision changes. These events have ``actor: unattributed``; correlate them with
-Juju audit logs for human attribution. First reconciliation establishes an audit
-baseline and does not emit a change event.
+.. list-table:: Event coverage overview
+   :header-rows: 1
+   :widths: 12 28 60
 
-Where remaining events belong
-------------------------------
+   * - Category
+     - Event
+     - Charm-layer coverage / owner
+   * - [AUTHN]
+     - Successful Login
+     - ❌ Kratos validates user credentials; the Identity Platform owns the login event.
+   * - [AUTHN]
+     - Failed Login
+     - ❌ Kratos rejects user credentials; the Identity Platform owns the failure event.
+   * - [AUTHN]
+     - Account Lockout
+     - ❌ Not implemented by Airflow charms. Identity Platform owns lockout policy.
+   * - [AUTHN]
+     - Password Changed
+     - ❌ Kratos/Identity Platform owns user password changes. Machine signing-key/client-secret rotations use [AUTHZ] administrative events instead.
+   * - [AUTHN]
+     - Token Created
+     - ❌ Hydra owns OAuth access-token issuance. Airflow API JWTs, if issued by Airflow, belong to its API auth manager. Signing-key creation is not token creation.
+   * - [AUTHN]
+     - Token Revoked
+     - ❌ Hydra owns OAuth token revocation; Airflow's API auth manager owns any Airflow-issued API JWTs.
+   * - [AUTHN]
+     - Token Reused
+     - ❌ Hydra checks OAuth tokens; the component validating a rejected, revoked, or replayed token should emit this event.
+   * - [AUTHN]
+     - Token Deleted
+     - ❌ Hydra owns OAuth token records; Airflow's API auth manager owns any Airflow-issued API JWT records.
+   * - [AUTHZ]
+     - Unauthorized Access Attempt
+     - ❌ Airflow's request authorization layer evaluates and denies access.
+   * - [AUTHZ]
+     - Administrative Activity
+     - ✅ Partial: coordinator logs observed security-policy and credential-revision changes. Airflow UI/API admin actions require runtime instrumentation.
+   * - [SYS]
+     - System Startup
+     - ✅ Workload charms observe Pebble stopped-to-running transitions.
+   * - [SYS]
+     - System Shutdown
+     - ✅ Workload charms log successful charm-requested stops of running services.
+   * - [SYS]
+     - System Restart
+     - ✅ Workload charms log successful charm-requested restarts.
+   * - [SYS]
+     - System Crash
+     - ✅ Limited: logged when a failed Pebble operation is followed by Pebble `ERROR` status.
+   * - [SYS]
+     - System Monitoring Disabled
+     - ❌ Charms expose no operation that disables security monitoring.
+   * - [USER]
+     - User Created
+     - ❌ Not applicable to the charm-managed layer. Airflow FAB/IdP owns creation if OAuth registration is enabled.
+   * - [USER]
+     - User Updated
+     - ❌ Not applicable to the charm-managed layer. Airflow/IdP owns user updates if supported.
 
-Charm hooks do not observe individual user requests, so request-level events belong
-at the component that makes the authentication or authorization decision:
+Authentication-related events [AUTHN]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* ``authn_login_success`` and ``authn_login_fail`` belong in the Airflow API/auth
-  manager for Airflow-validated credentials. If Hydra or another identity provider
-  performs the authentication, emit the event there instead.
-* Token creation, revocation, reuse, and deletion belong in Airflow or Hydra,
-  depending on which service issues, validates, or manages the token. The Airflow
-  ``secret-key`` and ``jwt-secret`` are signing keys, not access tokens; their
-  observed rotation is logged by the coordinator as ``authz_admin``.
-* ``authz_fail`` and administrative actions performed through the Airflow UI or API
-  belong in the Airflow authorization layer. The coordinator emits ``authz_admin``
-  for the configuration and credential changes it can observe during reconciliation.
-* Password changes and account lockouts belong in the identity provider when it
-  owns those controls. Airflow deployments that enable FAB OAuth user registration
-  should also audit user lifecycle events in Airflow or the identity provider.
+* **Successful Login** (``authn_login_success``): Kratos/Identity Platform emits this
+  when it successfully validates a user's credentials. Airflow charms do not observe
+  individual login requests.
+* **Failed Login** (``authn_login_fail``): Kratos/Identity Platform emits this when
+  credential validation fails. Airflow charms do not observe individual failures.
+* **Account Lockout** (``authn_login_lock``): lockout is not implemented by Airflow
+  charms, and Kratos support has not been confirmed. Identity Platform owns this
+  control; if it is supported and enabled, the Identity Platform should emit the
+  event. Confirm the deployment's lockout capability with that team before marking
+  the event not applicable to the overall product.
+* **Password Changed** (``authn_password_change``): Kratos/Identity Platform emits
+  this when a user password changes. Machine signing-key and client-secret rotations
+  are logged instead as coordinator ``authz_admin`` actions, not as user password
+  changes.
+* **Token Created** (``authn_token_created``): Hydra emits this when it issues an
+  OAuth access token. If Airflow's API auth manager separately issues API JWTs, it
+  owns those events. The coordinator's ``secret-key`` and ``jwt-secret`` are signing
+  keys, not access tokens, so their creation does not trigger this event.
+* **Token Revoked** (``authn_token_revoked``): Hydra emits this when it revokes an
+  OAuth token it manages; Airflow's API auth manager owns revocation events for any
+  Airflow-issued API JWTs.
+* **Token Reused** (``authn_token_reuse``): Hydra emits this when its token checks
+  detect a revoked, expired, or replayed OAuth token. Airflow's API auth manager
+  owns equivalent events for tokens it validates. Charm hooks do not validate
+  request tokens.
+* **Token Deleted** (``authn_token_delete``): Hydra emits this when an OAuth token
+  record it owns is deleted. Airflow's API auth manager owns deletion events for any
+  Airflow-issued token records. Juju signing-secret revisions are not token records.
 
-Event-category applicability
-----------------------------
+Authorization-related events [AUTHZ]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* ``[USER]`` is **Not Applicable to the charm-managed layer**. The coordinator,
-  API server charm, scheduler, DAG processor, and triggerer charms do not implement
-  or expose user-account creation and modification operations; their responsibility
-  is deploying services and reconciling configuration. Consequently, these charms
-  do not emit ``user_created`` or ``user_updated``.
-* This is not a blanket claim that user lifecycle events are inapplicable to every
-  Charmed Airflow deployment. OAuth user registration can be enabled in the Airflow
-  FAB configuration. When enabled, Airflow or its identity provider owns account
-  creation and any subsequent user management; those events must be audited at
-  that runtime or identity-provider boundary.
-* ``[AUTHN]`` is applicable to the Airflow product. The charm layer does not validate
-  individual API/JWT or OAuth login attempts, so login and token lifecycle events
-  must be emitted by Airflow or Hydra.
-* ``[AUTHZ]`` is applicable to the Airflow product. The coordinator emits
-  ``authz_admin`` for observed security-policy and credential-rotation changes;
-  request-level denials (``authz_fail``) and user-initiated administrative actions
-  require instrumentation in the Airflow runtime.
+* **Unauthorized Access Attempt** (``authz_fail``): emitted by Airflow's
+  authorization layer when an authenticated request is denied. Charm hooks do not
+  evaluate per-request roles or permissions, so this event is not currently emitted
+  by the charms.
+* **Administrative Activity** (``authz_admin``): the coordinator emits this for
+  observed security-policy changes and signing-key/client-secret revisions. Actions
+  performed by an administrator through the Airflow UI or API must be emitted by
+  the Airflow runtime. Coordinator events use ``actor: unattributed`` and include
+  a pointer to Juju audit logs because the hook cannot identify the human initiator.
+
+System-level events [SYS]
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These events are emitted by the API server, scheduler, DAG processor, and triggerer
+charms, with app IDs ``airflow.api-server``, ``airflow.scheduler``,
+``airflow.dag-processor``, and ``airflow.triggerer`` respectively.
+
+* **System Startup** (``sys_startup``): emitted when reconcile observes a Pebble
+  service transition from stopped to running after Pebble applies the charm's
+  service plan.
+* **System Shutdown** (``sys_shutdown``): emitted when a charm successfully stops a
+  previously running service because its coordinator relation is missing.
+* **System Restart** (``sys_restart``): emitted after a charm successfully restarts
+  its service due to a configuration change.
+* **System Crash** (``sys_crash``): emitted only when a failed Pebble operation is
+  followed by Pebble reporting the service as ``ERROR``. It does not cover every
+  process crash or Kubernetes eviction.
+* **System Monitoring Disabled** (``sys_monitor_disabled``): not emitted. The charms
+  do not expose an operation that disables a security monitor or telemetry sensor.
+  The coordinator disables the unused workload health check for its database-only
+  migration container; that is not treated as disabling security monitoring.
+
+User-related events [USER]
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* **User Created** (``user_created``): **Not Applicable to the charm-managed layer**.
+  The coordinator and workload charms do not implement or expose account creation.
+  If OAuth user registration is enabled, Airflow FAB or the identity provider owns
+  registration and must emit the event.
+* **User Updated** (``user_updated``): **Not Applicable to the charm-managed layer**.
+  The charms do not modify user accounts. If user updates are supported by the
+  configured Airflow auth manager or identity provider, that runtime must emit the
+  event.
 
 Operational boundaries
 ----------------------
