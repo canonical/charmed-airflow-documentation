@@ -60,7 +60,7 @@ inapplicable to the Airflow product.
      - ❌ Kratos rejects user credentials; the Identity Platform owns the failure event.
    * - [AUTHN]
      - Account Lockout
-     - ❌ Not implemented by Airflow charms. Identity Platform owns lockout policy.
+     - ❌ Not available: neither the Airflow charms nor Kratos implement account lockout.
    * - [AUTHN]
      - Password Changed
      - ❌ Kratos/Identity Platform owns user password changes. Machine signing-key/client-secret rotations use [AUTHZ] administrative events instead.
