@@ -78,7 +78,7 @@ inapplicable to the Airflow product.
      - ❌ Hydra owns OAuth token records; Airflow's API auth manager owns any Airflow-issued API JWT records.
    * - [AUTHZ]
      - Unauthorized Access Attempt
-     - ❌ Not available: neither the Airflow charms nor Kratos implement account lockout.
+     - ❌ Airflow's authorization layer owns request-level denials; charm hooks do not evaluate per-request permissions.
    * - [AUTHZ]
      - Administrative Activity
      - ✅ Coordinator logs observed security-policy and credential-revision changes; Provider Configurator logs successfully published configuration changes. Airflow UI/API admin actions require runtime instrumentation.
@@ -139,9 +139,10 @@ Authorization-related events [AUTHZ]
 * **Unauthorized Access Attempt** (``authz_fail``): emitted by Airflow's
   authorization layer when an authenticated request is denied. Charm hooks do not
   evaluate per-request roles or permissions, so request-level ``authz_fail`` is not
-  currently emitted by Airflow charms. The Provider Configurator emits
-  ``authz_fail:unattributed,<config-key>`` when its Layer 2 denylist drops a
-  prohibited provider setting; repeated identical denied-key sets are deduplicated.
+  currently emitted by Airflow charms. When the Provider Configurator's Layer 2
+  denylist drops a prohibited provider setting, it is logged as invalid input
+  rather than an access attempt: ``input_validation_discrete_fail:<config-key>,unattributed``
+  at ``WARN``. Repeated identical denied-key sets are deduplicated.
 * **Administrative Activity** (``authz_admin``): the coordinator emits this for
   observed security-policy changes and signing-key/client-secret revisions. Actions
   performed by an administrator through the Airflow UI or API must be emitted by
