@@ -153,7 +153,7 @@ Authorization-related events [AUTHZ]
   actions:
 
   * ``update_security_config``: a security-related charm option changed (user
-    registration, IdP group-to-role mappings, or OAuth enablement). Only the names
+    registration, IdP group-to-role mappings, or OAuth authorization). Only the names
     of the changed options are logged.
   * ``rotate_signing_key``: the revision of the coordinator-owned API signing-key
     secret changed.
