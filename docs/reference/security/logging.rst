@@ -18,8 +18,8 @@ Each security event is a single-line JSON object with these fields:
        "event": "sys_restart:juju-charm",
        "level": "WARN",
        "actor": "juju-charm",
-       "target": "airflow",
-       "description": "Airflow api-server: Service restarted by the charm.",
+       "target": "airflow-api-server",
+       "description": "Service restarted by the charm.",
        "data": {"trigger": "configuration_changed"}
      }
    }
@@ -54,28 +54,28 @@ inapplicable to the Airflow product.
      - Charm-layer coverage / owner
    * - [AUTHN]
      - Successful Login
-     - ❌ Kratos validates user credentials; the Identity Platform owns the login event.
+     - ❌ Kratos validates user credentials; the Identity Platform owns the login event; emission is not verified here.
    * - [AUTHN]
      - Failed Login
-     - ❌ Kratos rejects user credentials; the Identity Platform owns the failure event.
+     - ❌ Kratos rejects user credentials; the Identity Platform owns the failure event; emission is not verified here.
    * - [AUTHN]
      - Account Lockout
      - ❌ Not available: neither the Airflow charms nor Kratos implement account lockout.
    * - [AUTHN]
      - Password Changed
-     - ❌ Kratos/Identity Platform owns user password changes. Machine signing-key/client-secret rotations use [AUTHZ] administrative events instead.
+     - ❌ Kratos/Identity Platform owns user password changes; emission is not verified here. Machine signing-key/client-secret rotations use [AUTHZ] administrative events instead.
    * - [AUTHN]
      - Token Created
-     - ❌ Hydra owns OAuth access-token issuance. Airflow API JWTs, if issued by Airflow, belong to its API auth manager. Signing-key creation is not token creation.
+     - ❌ Hydra owns OAuth access-token issuance; emission is not verified here. Airflow API JWTs, if issued by Airflow, belong to its API auth manager. Signing-key creation is not token creation.
    * - [AUTHN]
      - Token Revoked
-     - ❌ Hydra owns OAuth token revocation; Airflow's API auth manager owns any Airflow-issued API JWTs.
+     - ❌ Hydra owns OAuth token revocation; emission is not verified here. Airflow's API auth manager owns any Airflow-issued API JWTs.
    * - [AUTHN]
      - Token Reused
-     - ❌ Hydra checks OAuth tokens; the component validating a rejected, revoked, or replayed token should emit this event.
+     - ❌ Hydra checks OAuth tokens; the component validating a rejected, revoked, or replayed token should emit this event; emission is not verified here.
    * - [AUTHN]
      - Token Deleted
-     - ❌ Hydra owns OAuth token records; Airflow's API auth manager owns any Airflow-issued API JWT records.
+     - ❌ Hydra owns OAuth token records; emission is not verified here. Airflow's API auth manager owns any Airflow-issued API JWT records.
    * - [AUTHZ]
      - Unauthorized Access Attempt
      - ❌ Airflow's authorization layer owns request-level denials; charm hooks do not evaluate per-request permissions.
@@ -107,31 +107,36 @@ inapplicable to the Airflow product.
 Authentication-related events [AUTHN]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* **Successful Login** (``authn_login_success``): Kratos/Identity Platform emits this
-  when it successfully validates a user's credentials. Airflow charms do not observe
-  individual login requests.
-* **Failed Login** (``authn_login_fail``): Kratos/Identity Platform emits this when
-  credential validation fails. Airflow charms do not observe individual failures.
+* **Successful Login** (``authn_login_success``): Kratos/Identity Platform is responsible
+  for this event because it validates user credentials. Airflow charms do not observe
+  individual login requests, so the charm layer does not emit this event. Emission by
+  Kratos in this deployment is not verified.
+* **Failed Login** (``authn_login_fail``): Kratos/Identity Platform is responsible for
+  this event when credential validation fails. Airflow charms do not observe individual
+  failures. Emission by Kratos in this deployment is not verified.
 * **Account Lockout** (``authn_login_lock``): **Not available** in the current
   deployment; neither the Airflow charms nor Kratos implement account lockout.
-* **Password Changed** (``authn_password_change``): Kratos/Identity Platform emits
-  this when a user password changes. Machine signing-key and client-secret rotations
-  are logged instead as coordinator ``authz_admin`` actions, not as user password
-  changes.
-* **Token Created** (``authn_token_created``): Hydra emits this when it issues an
-  OAuth access token. If Airflow's API auth manager separately issues API JWTs, it
-  owns those events. The coordinator's ``secret-key`` and ``jwt-secret`` are signing
-  keys, not access tokens, so their creation does not trigger this event.
-* **Token Revoked** (``authn_token_revoked``): Hydra emits this when it revokes an
-  OAuth token it manages; Airflow's API auth manager owns revocation events for any
-  Airflow-issued API JWTs.
-* **Token Reused** (``authn_token_reuse``): Hydra emits this when its token checks
-  detect a revoked, expired, or replayed OAuth token. Airflow's API auth manager
-  owns equivalent events for tokens it validates. Charm hooks do not validate
-  request tokens.
-* **Token Deleted** (``authn_token_delete``): Hydra emits this when an OAuth token
-  record it owns is deleted. Airflow's API auth manager owns deletion events for any
-  Airflow-issued token records. Juju signing-secret revisions are not token records.
+* **Password Changed** (``authn_password_change``): Kratos/Identity Platform is
+  responsible for this event when a user password changes. Machine signing-key and
+  client-secret rotations are logged instead as coordinator ``authz_admin`` actions,
+  not as user password changes. Emission by Kratos in this deployment is not verified.
+* **Token Created** (``authn_token_created``): Hydra is responsible for this event when
+  it issues an OAuth access token. If Airflow's API auth manager separately issues API
+  JWTs, it owns those events. The coordinator's ``secret-key`` and ``jwt-secret`` are
+  signing keys, not access tokens, so their creation does not trigger this event.
+  Emission by Hydra in this deployment is not verified.
+* **Token Revoked** (``authn_token_revoked``): Hydra is responsible for this event when
+  it revokes an OAuth token it manages; Airflow's API auth manager owns revocation
+  events for any Airflow-issued API JWTs. Emission by Hydra in this deployment is not
+  verified.
+* **Token Reused** (``authn_token_reuse``): Hydra is responsible for this event when its
+  token checks detect a revoked, expired, or replayed OAuth token. Airflow's API auth
+  manager owns equivalent events for tokens it validates. Charm hooks do not validate
+  request tokens. Emission by Hydra in this deployment is not verified.
+* **Token Deleted** (``authn_token_delete``): Hydra is responsible for this event when an
+  OAuth token record it owns is deleted. Airflow's API auth manager owns deletion events
+  for any Airflow-issued token records. Juju signing-secret revisions are not token
+  records. Emission by Hydra in this deployment is not verified.
 
 Authorization-related events [AUTHZ]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -191,6 +196,34 @@ Operational boundaries
 ----------------------
 
 ``[SYS]`` events describe transitions observed or initiated by a charm through Pebble. They are not a complete record of Kubernetes pod eviction, node failure, OOM termination, or every process restart. 
+
+Locating events in Juju logs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Security events are read directly from the charm log stream with ``juju debug-log``. Each
+record is a single line containing the ``owasp_event`` JSON object, so operators can
+filter for the key and pretty-print the matches with ``jq``:
+
+.. code-block:: bash
+
+   # Replay all buffered logs and show only security events
+   juju debug-log --replay --no-tail | grep -o '{"owasp_event".*}' | jq .
+
+The ``grep -o`` step strips the Juju log prefix so that only the JSON object is passed
+to ``jq``. To narrow the output to a specific component or event type, filter on the
+``appid`` and ``event`` fields:
+
+.. code-block:: bash
+
+   # Show only API server restarts
+   juju debug-log --replay --no-tail \
+     | grep -o '{"owasp_event".*}' \
+     | jq 'select(.owasp_event.appid == "airflow.api-server"
+                  and (.owasp_event.event | startswith("sys_restart")))'
+
+Omit ``--replay --no-tail`` to follow new events as they are emitted. These commands
+verify that events are being produced; they are not a substitute for forwarding the
+logs to a durable, searchable store.
 
 The charm log stream is not automatically a SIEM destination. Operators must
 configure log forwarding and JSON field extraction for their environment. The
