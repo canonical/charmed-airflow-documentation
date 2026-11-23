@@ -63,7 +63,7 @@ inapplicable to the Airflow product.
      - ❌ Not available: neither the Airflow charms nor Kratos implement account lockout.
    * - [AUTHN]
      - Password Changed
-     - ❌ Kratos/Identity Platform owns user password changes; emission is not verified here. Machine signing-key/client-secret rotations use [AUTHZ] administrative events instead.
+     - ❌ Kratos/Identity Platform owns user password changes; emission is not verified here. Machine signing-key, fernet-key, and client-secret rotations use [AUTHZ] administrative events instead.
    * - [AUTHN]
      - Token Created
      - ❌ Hydra owns OAuth access-token issuance; emission is not verified here. Airflow API JWTs, if issued by Airflow, belong to its API auth manager. Signing-key creation is not token creation.
@@ -81,7 +81,7 @@ inapplicable to the Airflow product.
      - ❌ Airflow's authorization layer owns request-level denials; charm hooks do not evaluate per-request permissions.
    * - [AUTHZ]
      - Administrative Activity
-     - ✅ Coordinator logs observed security-policy and credential-revision changes; Provider Configurator logs successfully published configuration changes. Airflow UI/API admin actions require runtime instrumentation.
+     - ✅ Coordinator logs observed security-policy changes and rotations of the API signing keys, the fernet key, and the Hydra client secret; Provider Configurator logs successfully published configuration changes. Airflow UI/API admin actions require runtime instrumentation.
    * - [SYS]
      - System Startup
      - ✅ Core workload charms and Provider Configurator observe Pebble stopped-to-running transitions.
@@ -117,9 +117,10 @@ Authentication-related events [AUTHN]
 * **Account Lockout** (``authn_login_lock``): **Not available** in the current
   deployment; neither the Airflow charms nor Kratos implement account lockout.
 * **Password Changed** (``authn_password_change``): Kratos/Identity Platform is
-  responsible for this event when a user password changes. Machine signing-key and
-  client-secret rotations are logged instead as coordinator ``authz_admin`` actions,
-  not as user password changes. Emission by Kratos in this deployment is not verified.
+  responsible for this event when a user password changes. Machine signing-key,
+  fernet-key, and client-secret rotations are logged instead as coordinator
+  ``authz_admin`` actions, not as user password changes. Emission by Kratos in this
+  deployment is not verified.
 * **Token Created** (``authn_token_created``): Hydra is responsible for this event when
   it issues an OAuth access token. If Airflow's API auth manager separately issues API
   JWTs, it owns those events. The coordinator's ``secret-key`` and ``jwt-secret`` are
@@ -148,11 +149,31 @@ Authorization-related events [AUTHZ]
   denylist drops a prohibited provider setting, it is logged as invalid input
   rather than an access attempt: ``input_validation_discrete_fail:<config-key>,unattributed``
   at ``WARN``. Repeated identical denied-key sets are deduplicated.
-* **Administrative Activity** (``authz_admin``): the coordinator emits this for
-  observed security-policy changes and signing-key/client-secret revisions. Actions
-  performed by an administrator through the Airflow UI or API must be emitted by
-  the Airflow runtime. The Provider Configurator emits this when changed provider
-  configuration is successfully published. Charm-side events use
+* **Administrative Activity** (``authz_admin``): the coordinator emits these
+  actions:
+
+  * ``update_security_config``: a security-related charm option changed (user
+    registration, IdP group-to-role mappings, or OAuth enablement). Only the names
+    of the changed options are logged.
+  * ``rotate_signing_key``: the revision of the coordinator-owned API signing-key
+    secret changed.
+  * ``rotate_fernet_key``: the ``fernet_key_secret`` option now points to a
+    different secret (``observed_via: charm_config``), or a new revision of the
+    configured secret was received (``observed_via: juju_secret_changed``).
+  * ``update_client_secret``: the Hydra OAuth client ID or client secret published
+    on the ``oauth`` relation changed (``observed_via: oauth_relation_data``), or a
+    new revision of that secret was received (``observed_via: juju_secret_changed``).
+
+  The fernet key and Hydra client secrets are owned by the user and by Hydra, so
+  the coordinator cannot read their revision numbers; it records only their secret
+  IDs and reacts to Juju ``secret-changed`` notifications. These events mean the
+  coordinator observed the change. They do not confirm that every Airflow component
+  has started using the new value; that is shown by each component's ``sys_restart``
+  event.
+
+  Actions performed by an administrator through the Airflow UI or API must be
+  emitted by the Airflow runtime. The Provider Configurator emits this when changed
+  provider configuration is successfully published. Charm-side events use
   ``actor: unattributed`` and point to Juju or repository audit logs because the
   hook cannot identify the human initiator.
 
